@@ -1,46 +1,11 @@
 {
   "name": "finddev",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/rodriggoarantes/findev.git",
-  "author": "rodrigo.arantes <rodrigo.arantes@totvs.com.br>",
-  "license": "MIT",
+  "description": "findev",
+  "main": "index.ts",
   "scripts": {
-    "dev": "ts-node src/server.ts",
-    "start": "ts-node dist/server.js",
-    "build": "tsc -p .",
-    "serve": "firebase serve --only functions",
-    "shell": "firebase functions:shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "@types/cors": "^2.8.6",
-    "@types/express": "^4.17.2",
-    "@types/jsonwebtoken": "^8.3.6",
-    "@types/node": "^13.1.6",
-    "cors": "^2.8.5",
-    "date-fns": "^2.0.0-beta.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-async-errors": "^3.1.1",
-    "express-handlebars": "^3.1.0",
-    "firebase-admin": "^8.6.0",
-    "firebase-functions": "^3.3.0",
-    "jsonwebtoken": "^8.5.1",
-    "ts-node": "^8.6.2",
-    "typescript": "^3.7.4",
-    "youch": "^2.0.10",
-    "yup": "^0.27.0"
-  },
-  "devDependencies": {
-    "eslint": "^6.4.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.3.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-prettier": "^3.1.1",
-    "firebase-functions-test": "^0.1.6",
-    "prettier": "^1.18.2"
-  },
-  "private": true
+  "author": "rodrigo.arantes",
+  "license": "MIT"
 }

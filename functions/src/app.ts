@@ -9,7 +9,7 @@ import 'express-async-errors';
 
 import routes from './routes';
 
-class App {
+export default class App {
   public server: Application;
   public port: number = 3333;
 
@@ -57,5 +57,3 @@ class App {
     });
   }
 }
-
-export default App;
