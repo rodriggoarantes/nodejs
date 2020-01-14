@@ -1,9 +1,9 @@
-import jwt from 'jsonwebtoken';
-import { promisify } from 'util';
+import { Router, Request, Response, NextFunction } from 'express';
+import * as jwt from 'jsonwebtoken';
 
 import authConfig from '../../config/auth';
 
-export default async (req, res, next) => {
+export default async (req: Request, res: Response, next: NextFunction) => {
   const autHeader = req.headers.authorization;
 
   if (!autHeader) {
@@ -12,8 +12,8 @@ export default async (req, res, next) => {
 
   const [, token] = autHeader.split(' ');
   try {
-    const decoded = await promisify(jwt.verify)(token, authConfig.secret);
-    req.userId = decoded.id;
+    const decoded: any = jwt.verify(token, authConfig);
+    req.params['userId'] = decoded.id;
     return next();
   } catch (error) {
     return res.status(401).json({
