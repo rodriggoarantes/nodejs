@@ -1,0 +1,11 @@
+{
+  "name": "firebase-ts",
+  "version": "1.0.0",
+  "description": "Projeto Base para Firebase Functions com ExpressJS",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rodrigo.arantes",
+  "license": "MIT"
+}
