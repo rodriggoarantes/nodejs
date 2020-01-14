@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as express from 'express';
 import { Application } from 'express';
 import * as cors from 'cors';
+import * as mongoose from 'mongoose';
 
 import 'express-async-errors';
 
@@ -19,6 +20,7 @@ export default class App {
     this.middlewares();
     this.routes();
     this.exceptionHandler();
+    this.database();
   }
 
   private middlewares() {
@@ -49,6 +51,16 @@ export default class App {
         return res.status(500).json({ message: 'Erro interno não esperado' });
       }
     );
+  }
+
+  private database() {
+    const localdatabase = 'mongodb://localhost:27017/gobarber';
+    //const dburl = 'mongodb+srv://findev:findev@cluster0-wy7g9.gcp.mongodb.net/findev?retryWrites=true&w=majority';
+    mongoose.connect(localdatabase, {
+      useNewUrlParser: true,
+      useFindAndModify: true,
+      useUnifiedTopology: true
+    });
   }
 
   public listen() {
