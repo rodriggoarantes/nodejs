@@ -8,7 +8,7 @@
     "dev": "nodemon",
     "start": "ts-node src/server.ts",
     "build": "tsc",
-    "serve": "ts-node lib/server.js"
+    "serve": "npm run build && ts-node lib/server.js"
   },
   "main": "lib/server.js",
   "dependencies": {

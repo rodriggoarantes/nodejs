@@ -47,8 +47,6 @@ export default class App {
     );
     this.server.use(helmet());
 
-    console.log(`nodeenv::: ${process.env.NODE_ENV}`);
-
     if (process.env.NODE_ENV === 'develop') {
       this.server.use(morgan('dev')); // log every request to the console
     } else {
