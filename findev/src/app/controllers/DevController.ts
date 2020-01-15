@@ -8,7 +8,7 @@ class DevController {
   async store(req: Request, res: Response) {
     const gitHubApi: string = 'https://api.github.com/users';
 
-    const { githubUsername, techs } = req.body;
+    const { githubUsername, techs, latitude, longitude } = req.body;
 
     const response = await axios.get(`${gitHubApi}/${githubUsername}`);
 
@@ -25,7 +25,9 @@ class DevController {
       avatarUrl: avatar_url,
       bio,
       techs: techsArray,
-      githubUsername: login
+      githubUsername: login,
+      latitude,
+      longitude
     };
     ref.set(dev);
 
