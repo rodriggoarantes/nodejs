@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import DevSchema, { Dev } from './../models/Dev';
+import * as firebase from 'firebase-admin';
+import { Dev } from './../models/Dev';
 
 import axios from 'axios';
 
@@ -17,15 +18,18 @@ class DevController {
       .split(',')
       .map((tech: string) => tech.trim());
 
-    const dev: Dev = await DevSchema.create(<Dev>{
+    const db = firebase.firestore();
+    const ref = db.collection('devs').doc();
+    const dev: Dev = <Dev>{
       name,
       avatarUrl: avatar_url,
       bio,
       techs: techsArray,
       githubUsername: login
-    });
+    };
+    ref.set(dev);
 
-    return res.json(dev);
+    return res.json({ id: ref.id, ...dev });
   }
 }
 
