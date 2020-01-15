@@ -45,18 +45,21 @@ export default class App {
         res: express.Response,
         next: express.NextFunction
       ) => {
-        if (process.env.NODE_ENV === 'develop') {
-          return res.status(500).json(err);
-        }
-        return res.status(500).json({ message: 'Erro interno não esperado' });
+        return res
+          .status(500)
+          .json({
+            message: 'Erro interno não esperado',
+            error: JSON.stringify(err)
+          });
       }
     );
   }
 
   private database() {
-    const localdatabase = 'mongodb://localhost:27017/gobarber';
-    //const dburl = 'mongodb+srv://findev:findev@cluster0-wy7g9.gcp.mongodb.net/findev?retryWrites=true&w=majority';
-    mongoose.connect(localdatabase, {
+    //const dburl = 'mongodb://localhost:27017/gobarber';
+    const dburl =
+      'mongodb+srv://findev:findev@cluster0-wy7g9.gcp.mongodb.net/findev?retryWrites=true&w=majority';
+    mongoose.connect(dburl, {
       useNewUrlParser: true,
       useFindAndModify: true,
       useUnifiedTopology: true
