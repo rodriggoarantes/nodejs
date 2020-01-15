@@ -5,6 +5,9 @@ import * as dotenv from 'dotenv';
 import * as express from 'express';
 import { Application } from 'express';
 import * as cors from 'cors';
+import * as helmet from 'helmet';
+import * as morgan from 'morgan'; // log requests to the console
+import * as compression from 'compression';
 
 import fbConfig from './config/firebase';
 import * as firebase from 'firebase-admin';
@@ -16,16 +19,22 @@ import admin = require('firebase-admin');
 
 export default class App {
   public server: Application;
-  public port: number = 3333;
+  private port: number = 3333;
 
   constructor() {
-    dotenv.config();
     this.server = express();
 
+    this.config();
     this.middlewares();
     this.routes();
     this.exceptionHandler();
     this.database();
+  }
+
+  private config() {
+    dotenv.config();
+    process.env.NODE_ENV = process.env.NODE_ENV || 'develop';
+    process.env.PORT = process.env.PORT || String(this.port);
   }
 
   private middlewares() {
@@ -36,6 +45,15 @@ export default class App {
       '/files',
       express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
     );
+    this.server.use(helmet());
+
+    console.log(`nodeenv::: ${process.env.NODE_ENV}`);
+
+    if (process.env.NODE_ENV === 'develop') {
+      this.server.use(morgan('dev')); // log every request to the console
+    } else {
+      this.server.use(compression());
+    }
   }
 
   private routes() {
