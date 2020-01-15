@@ -8,7 +8,8 @@
     "dev": "nodemon",
     "start": "ts-node src/server.ts",
     "build": "tsc",
-    "serve": "npm run build && ts-node lib/server.js"
+    "serve": "node lib/server.js",
+    "postinstall": "npm run build"
   },
   "main": "lib/server.js",
   "dependencies": {
@@ -43,9 +44,6 @@
     "prettier": "^1.18.2",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.4"
-  },
-  "engines": {
-    "node": "10"
   },
   "private": true,
   "nodemonConfig": {
