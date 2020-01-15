@@ -1,14 +1,5 @@
-import GeoTypes from './GeoTypes';
-import Geometry from './Geometry';
+import * as firebase from 'firebase-admin';
 
-export interface Propertie {
-  name: string;
-}
-
-interface Location {
-  type: GeoTypes;
-  geometry: Geometry;
-  properties: Propertie;
-}
+class Location extends firebase.firestore.GeoPoint {}
 
 export default Location;

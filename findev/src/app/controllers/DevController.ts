@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import * as firebase from 'firebase-admin';
-import { Dev } from './../models/Dev';
+import Dev from './../models/Dev';
 
 import axios from 'axios';
+import Location from '../models/Location';
 
 class DevController {
   async store(req: Request, res: Response) {
@@ -18,16 +19,20 @@ class DevController {
       .split(',')
       .map((tech: string) => tech.trim());
 
+    const location: Location = new firebase.firestore.GeoPoint(
+      latitude,
+      longitude
+    );
+
     const db = firebase.firestore();
     const ref = db.collection('devs').doc();
-    const dev: Dev = <Dev>{
+    const dev: Dev = {
       name,
       avatarUrl: avatar_url,
       bio,
       techs: techsArray,
       githubUsername: login,
-      latitude,
-      longitude
+      location
     };
     ref.set(dev);
 

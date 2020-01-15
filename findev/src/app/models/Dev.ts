@@ -1,3 +1,5 @@
+import Location from './Location';
+
 interface Dev {
   id?: string;
   name: string;
@@ -5,8 +7,7 @@ interface Dev {
   bio?: string;
   avatarUrl?: string;
   techs?: Array<string>;
-  latitude: number;
-  longitude: number;
+  location: Location;
 }
 
 export default Dev;
