@@ -79,8 +79,8 @@ export default class App {
   }
 
   public listen() {
-    this.server.listen(this.port, () => {
-      console.log(`App listening on the http://localhost:${this.port}`);
+    this.server.listen(process.env.PORT, () => {
+      console.log(`App listening on the http://localhost:${process.env.PORT}`);
     });
   }
 }
