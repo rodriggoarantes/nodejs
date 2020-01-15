@@ -1,19 +1,16 @@
 {
   "compilerOptions": {
-    "sourceMap": true,
+    "lib": ["es2018"],
     "module": "commonjs",
-    "strict": true,
-    "baseUrl": "./src",
-    "outDir": "./dist",
-    "removeComments": true,
-    "experimentalDecorators": true,
-    "target": "es6",
-    "emitDecoratorMetadata": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "types": ["node"],
-    "typeRoots": ["node_modules/@types"]
+    "target": "es2018",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["node_modules", "public"]
+  "resolveJsonModuletrue": true,
+  "compileOnSave": true,
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", ".vscode"]
 }
