@@ -1,7 +1,7 @@
 {
-  "name": "firebase-ts",
+  "name": "finddev",
   "version": "1.0.0",
-  "description": "Projeto Base para Firebase Functions com ExpressJS",
+  "description": "findev",
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

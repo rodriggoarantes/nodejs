@@ -1,9 +1,6 @@
-# firebase-ts
-
-Projeto base com firebase functions, usando ExpressJS com Typescript.
+# find-dev
 
 # RUN
-yarn build
+yarn install
 yarn dev
-yarn deploy
 

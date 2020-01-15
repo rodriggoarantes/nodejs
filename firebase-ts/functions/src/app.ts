@@ -1,24 +1,31 @@
 import 'dotenv/config';
 
 import * as path from 'path';
+import * as dotenv from 'dotenv';
 import * as express from 'express';
 import { Application } from 'express';
 import * as cors from 'cors';
 
+import fbConfig from './config/firebase';
+import * as firebase from 'firebase-admin';
+
 import 'express-async-errors';
 
 import routes from './routes';
+import admin = require('firebase-admin');
 
 export default class App {
   public server: Application;
   public port: number = 3333;
 
   constructor() {
+    dotenv.config();
     this.server = express();
 
     this.middlewares();
     this.routes();
     this.exceptionHandler();
+    this.database();
   }
 
   private middlewares() {
@@ -43,12 +50,16 @@ export default class App {
         res: express.Response,
         next: express.NextFunction
       ) => {
-        if (process.env.NODE_ENV === 'develop') {
-          return res.status(500).json(err);
-        }
-        return res.status(500).json({ message: 'Erro interno não esperado' });
+        return res.status(500).json({
+          message: 'Erro interno não esperado',
+          error: JSON.stringify(err)
+        });
       }
     );
+  }
+
+  private database() {
+    firebase.initializeApp({ credential: admin.credential.cert(fbConfig) });
   }
 
   public listen() {
