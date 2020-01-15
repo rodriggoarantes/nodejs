@@ -9,6 +9,7 @@
     "sourceMap": true,
     "strict": true
   },
+  "resolveJsonModuletrue": true,
   "compileOnSave": true,
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", ".vscode"]
