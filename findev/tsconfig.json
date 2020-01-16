@@ -1,13 +1,17 @@
 {
   "compilerOptions": {
-    "lib": ["es2018"],
     "module": "commonjs",
     "target": "es2018",
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
-    "strict": true
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "moduleResolution": "node",
+    "strict": true,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2018", "dom"]
   },
   "resolveJsonModuletrue": true,
   "compileOnSave": true,

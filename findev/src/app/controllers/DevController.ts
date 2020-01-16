@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 
+import { parseStringToArray } from './../services/Utils';
+
 import devService from './../services/DevService';
 import githubService from './../services/GitHubService';
 
@@ -7,6 +9,11 @@ import User from '../models/User';
 import Dev from './../models/Dev';
 
 class DevController {
+  async index(req: Request, res: Response) {
+    const lista: Array<Dev> = await devService.list();
+    return res.json(lista);
+  }
+
   async store(req: Request, res: Response) {
     const { githubUsername, techs, latitude, longitude } = req.body;
 
@@ -23,13 +30,9 @@ class DevController {
       throw { code: 404, message: 'Usuário não encontrado no Github.' };
     }
 
-    const techsArray: Array<string> = techs
-      .split(',')
-      .map((tech: string) => tech.trim());
-
     const dev: Dev = devService.save(
       githubUser,
-      techsArray,
+      parseStringToArray(techs),
       latitude,
       longitude
     );
