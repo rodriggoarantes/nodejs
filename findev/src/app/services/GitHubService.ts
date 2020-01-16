@@ -7,7 +7,7 @@ class GitHubservice {
     const response = await axios.get(`${this.gitHubApi}/${githubUsername}`);
     const { login, avatar_url, bio, name } = response.data;
     return <User>{
-      name,
+      name: name || login,
       username: login,
       avatarUrl: avatar_url,
       description: bio
