@@ -1,5 +1,5 @@
-import * as firebase from 'firebase-admin';
+import { FirePoint } from 'geofirex';
 
-class Location extends firebase.firestore.GeoPoint {}
+interface Location extends FirePoint {}
 
 export default Location;

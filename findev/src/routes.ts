@@ -11,7 +11,7 @@ routes.get('/hello', UserController.hello);
 
 routes.get('/devs', DevController.index);
 routes.post('/devs', DevController.store);
-routes.get('/search', SearchController.index);
+routes.post('/search', SearchController.index);
 
 routes.use(authMiddleware);
 

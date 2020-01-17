@@ -1,10 +1,6 @@
 import * as firebase from 'firebase-admin';
-import {
-  GeoCollectionReference,
-  GeoFirestore,
-  GeoQuery,
-  GeoQuerySnapshot
-} from 'geofirestore';
+import * as geofirex from 'geofirex';
+import { get } from 'geofirex';
 import Dev from '../models/Dev';
 import Location from '../models/Location';
 import User from '../models/User';
@@ -37,10 +33,9 @@ class DevService {
     latitude: number,
     longitude: number
   ): Dev {
-    const location: Location = new firebase.firestore.GeoPoint(
-      latitude,
-      longitude
-    );
+    const geo = geofirex.init(<any>firebase);
+
+    const location: Location = geo.point(latitude, longitude);
 
     const dev: Dev = {
       name: user.name,
@@ -74,28 +69,25 @@ class DevService {
     longitude: number,
     techs: Array<string>
   ): Promise<Array<Dev>> {
-    // Create a Firestore reference
-    const firestore = firebase.firestore();
-    // Create a GeoFirestore reference
-    const geofirestore: GeoFirestore = new GeoFirestore(firestore);
-    // Create a GeoCollection reference
-    const geocollection: GeoCollectionReference = geofirestore.collection(
-      'devs'
-    );
-
-    // Create a GeoQuery based on a location
+    const geo = geofirex.init(<any>firebase);
     //TOTVS -16.6971993,-49.2575527
     //Predio -16.6972044 -49.255364
-    const query: GeoQuery = geocollection.near({
-      center: new firebase.firestore.GeoPoint(-16.6972044, -49.255364),
-      radius: 1000
-    });
 
-    // Get query (as Promise)
-    query.get().then((value: GeoQuerySnapshot) => {
-      console.log(value.docs);
-    });
-    return [];
+    const radius = 10;
+    const ref = this.getRef();
+    const position: Location = geo.point(-16.6972044, -49.255364);
+
+    const query = geo.query(ref).within(position, radius, 'location');
+
+    const nearByList: Array<Dev> = [];
+    const hits: Array<any> = await get(query);
+
+    if (hits && hits.length) {
+      hits.map((devPoint: any) => {
+        nearByList.push(<Dev>devPoint);
+      });
+    }
+    return nearByList;
   }
 }
 
