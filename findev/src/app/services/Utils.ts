@@ -1,4 +1,4 @@
-import Geo from '../models/Geo';
+import Geo from '@app/models/Geo';
 
 export const parseStringToArray = (strings: string) => {
   if (strings && strings.indexOf(',') >= 0) {

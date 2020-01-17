@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 
-import { parseStringToArray } from './../services/Utils';
-import devService from './../services/DevService';
+import { parseStringToArray } from '@app/services/Utils';
+import devService from '@app/services/DevService';
 
-import Dev from './../models/Dev';
+import Dev from '@app/models/Dev';
 
 class SearchController {
   async index(req: Request, res: Response) {

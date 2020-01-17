@@ -1,12 +1,20 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": ["app/*"]
+    },
     "target": "es2018",
     "outDir": "lib",
     "sourceMap": true,
+    "declaration": false,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
+    "module": "commonjs",
     "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
     "strict": true,
     "strictNullChecks": false,
     "strictPropertyInitialization": false,

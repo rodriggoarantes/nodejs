@@ -1,5 +1,5 @@
 import axios from 'axios';
-import User from '../models/User';
+import User from '@app/models/User';
 
 class GitHubservice {
   private gitHubApi: string = 'https://api.github.com/users';

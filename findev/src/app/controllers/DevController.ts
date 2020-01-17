@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 
-import { parseStringToArray } from './../services/Utils';
+import { parseStringToArray } from '@app/services/Utils';
 
-import devService from './../services/DevService';
-import githubService from './../services/GitHubService';
+import devService from '@app/services/DevService';
+import githubService from '@app/services/GitHubService';
 
-import User from '../models/User';
-import Dev from './../models/Dev';
+import User from '@app/models/User';
+import Dev from '@app/models/Dev';
 
 class DevController {
   async index(req: Request, res: Response) {

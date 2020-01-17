@@ -1,9 +1,9 @@
 import * as firebase from 'firebase-admin';
 import * as geofirex from 'geofirex';
-import { get } from 'geofirex';
-import Dev from '../models/Dev';
-import Location from '../models/Location';
-import User from '../models/User';
+
+import Dev from '@app/models/Dev';
+import Location from '@app/models/Location';
+import User from '@app/models/User';
 
 class DevService {
   private devsRefInstance: any = null;
@@ -80,7 +80,7 @@ class DevService {
     const query = geo.query(ref).within(position, radius, 'location');
 
     const nearByList: Array<Dev> = [];
-    const hits: Array<any> = await get(query);
+    const hits: Array<any> = await geofirex.get(query);
 
     if (hits && hits.length) {
       hits.map((devPoint: any) => {
