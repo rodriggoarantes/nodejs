@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 
-import authConfig from 'config/auth';
+import authConfig from '@app/config/auth';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   const autHeader = req.headers.authorization;

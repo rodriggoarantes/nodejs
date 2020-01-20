@@ -1,12 +1,12 @@
 {
-  "name": "finddev",
+  "name": "devradar",
   "version": "1.0.0",
-  "repository": "https://github.com/rodriggoarantes/findev.git",
+  "repository": "https://github.com/rodriggoarantes/nodejs.git",
   "author": "rodrigo.arantes <rodrigo.arantes@totvs.com.br>",
   "license": "MIT",
   "scripts": {
     "dev": "nodemon",
-    "start": "ts-node src/server.ts",
+    "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
     "build": "tsc",
     "serve": "node lib/server.js",
     "postinstall": "npm run build"
@@ -27,7 +27,8 @@
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
-    "rxjs": "^6.5.4"
+    "rxjs": "^6.5.4",
+    "tsconfig-paths": "^3.9.0"
   },
   "devDependencies": {
     "@types/compression": "^1.0.1",

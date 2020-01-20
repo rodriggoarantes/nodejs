@@ -9,13 +9,12 @@ import * as helmet from 'helmet';
 import * as morgan from 'morgan'; // log requests to the console
 import * as compression from 'compression';
 
-import fbConfig from './config/firebase';
+import fbConfig from './app/config/firebase';
 import * as firebase from 'firebase-admin';
 
 import 'express-async-errors';
 
 import routes from './routes';
-import admin = require('firebase-admin');
 
 export default class App {
   public server: Application;
@@ -76,7 +75,7 @@ export default class App {
   }
 
   private database() {
-    firebase.initializeApp({ credential: admin.credential.cert(fbConfig) });
+    firebase.initializeApp({ credential: firebase.credential.cert(fbConfig) });
   }
 
   public listen() {
