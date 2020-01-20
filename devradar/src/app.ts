@@ -25,10 +25,11 @@ export default class App {
     this.server = express();
 
     this.config();
+    this.database();
+
     this.middlewares();
     this.routes();
     this.exceptionHandler();
-    this.database();
   }
 
   private config() {
@@ -61,14 +62,14 @@ export default class App {
   private exceptionHandler() {
     this.server.use(
       async (
-        err: express.ErrorRequestHandler,
+        err: any,
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
       ) => {
         return res.status(500).json({
-          message: 'Erro interno não esperado',
-          error: JSON.stringify(err)
+          message: err.message || 'Erro interno não esperado',
+          error: err
         });
       }
     );
