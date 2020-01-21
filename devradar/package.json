@@ -5,11 +5,9 @@
   "author": "rodrigo.arantes <rodrigo.arantes@totvs.com.br>",
   "license": "MIT",
   "scripts": {
+    "build": "tsc -p .",
     "dev": "nodemon",
-    "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
-    "build": "tsc",
-    "serve": "node lib/server.js",
-    "postinstall": "npm run build",
+    "start": "ts-node -r tsconfig-paths/register ./src/server.ts",
     "heroku-postbuild": "npm run build"
   },
   "main": "lib/server.js",
@@ -28,8 +26,7 @@
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
-    "rxjs": "^6.5.4",
-    "tsconfig-paths": "^3.9.0"
+    "rxjs": "^6.5.4"
   },
   "devDependencies": {
     "@types/compression": "^1.0.1",
@@ -48,7 +45,8 @@
     "nodemon": "^2.0.2",
     "prettier": "^1.18.2",
     "ts-node": "^8.6.2",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.4",
+    "tsconfig-paths": "^3.9.0"
   },
   "private": true,
   "nodemonConfig": {
