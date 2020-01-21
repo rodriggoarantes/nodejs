@@ -26,6 +26,7 @@
     "geofirex": "^0.1.0",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
     "morgan": "^1.9.1",
     "rxjs": "^6.5.4"
   },
@@ -43,7 +44,6 @@
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
-    "module-alias": "^2.2.2",
     "nodemon": "^2.0.2",
     "prettier": "^1.18.2",
     "ts-node": "^8.6.2",
