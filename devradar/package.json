@@ -9,7 +9,8 @@
     "start": "node -r tsconfig-paths/register -r ts-node/register ./src/server.ts",
     "build": "tsc",
     "serve": "node lib/server.js",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "heroku-postbuild": "npm run build"
   },
   "main": "lib/server.js",
   "dependencies": {
