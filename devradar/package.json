@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc -p .",
     "dev": "nodemon",
-    "start": "ts-node -r tsconfig-paths/register ./src/server.ts",
+    "start": "ts-node ./src/server.ts",
+    "serve": "node ./lib/server.js",
     "heroku-postbuild": "npm run build"
   },
   "main": "lib/server.js",
@@ -42,11 +43,11 @@
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
+    "module-alias": "^2.2.2",
     "nodemon": "^2.0.2",
     "prettier": "^1.18.2",
     "ts-node": "^8.6.2",
-    "typescript": "^3.7.4",
-    "tsconfig-paths": "^3.9.0"
+    "typescript": "^3.7.4"
   },
   "private": true,
   "nodemonConfig": {
@@ -61,5 +62,8 @@
     ],
     "exec": "npm start",
     "ext": "ts"
+  },
+  "_moduleAliases": {
+    "@app": "lib/app"
   }
 }
