@@ -1,4 +1,5 @@
 import * as firebase from 'firebase-admin';
+import { get } from 'geofirex';
 import * as geofirex from 'geofirex';
 
 import Dev from '@app/models/Dev';
@@ -6,20 +7,18 @@ import Location from '@app/models/Location';
 import User from '@app/models/User';
 
 class DevService {
-  private devsRefInstance: any = null;
+  private firestoreDb: any = null;
 
   private getRef() {
-    if (!this.devsRefInstance) {
-      const db = firebase.firestore();
-      this.devsRefInstance = db.collection('devs');
+    if (!this.firestoreDb) {
+      this.firestoreDb = firebase.firestore();
     }
-    return this.devsRefInstance;
+    return this.firestoreDb.collection('devs');
   }
 
   async findByUsername(username: string): Promise<Dev> {
-    const findQuery = await this.getRef()
-      .where('githubUsername', '==', username)
-      .limit(1);
+    const devRef = this.getRef();
+    const findQuery = devRef.where('githubUsername', '==', username).limit(1);
     const result = await findQuery.get();
     if (result && !result.empty && result.docs[0] && result.docs[0].data()) {
       return result.docs[0].data();
@@ -43,7 +42,7 @@ class DevService {
       bio: user.description,
       techs,
       githubUsername: user.username,
-      location
+      location,
     };
 
     const ref = this.getRef().doc();
@@ -64,27 +63,48 @@ class DevService {
     return [];
   }
 
+  async searchByTechs(techs: Array<string>): Promise<Array<Dev>> {
+    const devs = this.getRef();
+    const devsByTech = devs.where('techs', 'array-contains-any', techs);
+
+    devsByTech.get().then((snapshot: any) => {
+      snapshot.forEach(function(doc: any) {
+        console.log(doc.id, ' => ', doc.data());
+      });
+    });
+
+    const result = await devsByTech.get();
+    if (!result.empty) {
+      const listaDevs: Array<Dev> = new Array();
+      result.forEach((element: any) => {
+        listaDevs.push(element.data());
+      });
+      return listaDevs;
+    }
+    return [];
+  }
+
   async search(
     latitude: number,
     longitude: number,
     techs: Array<string>
   ): Promise<Array<Dev>> {
     const geo = geofirex.init(<any>firebase);
-    //TOTVS -16.6971993,-49.2575527
-    //Predio -16.6972044 -49.255364
 
-    const radius = 10;
-    const ref = this.getRef();
-    const position: Location = geo.point(-16.6972044, -49.255364);
+    const devs = this.getRef();
+    const devsByTech = devs.where('techs', 'array-contains-any', techs);
 
-    const query = geo.query(ref).within(position, radius, 'location');
+    const radius = 1;
+    const field = 'location';
+    const position: Location = geo.point(latitude, longitude);
+    const query = geo.query(devsByTech).within(position, radius, field);
 
     const nearByList: Array<Dev> = [];
-    const hits: Array<any> = await geofirex.get(query);
+    const hits: Array<any> = await get(query);
 
     if (hits && hits.length) {
-      hits.map((devPoint: any) => {
-        nearByList.push(<Dev>devPoint);
+      hits.map((devPoint: Dev) => {
+        nearByList.push(devPoint);
       });
     }
     return nearByList;

@@ -19,6 +19,21 @@ class SearchController {
 
     return res.json(devs);
   }
+
+  async username(req: Request, res: Response) {
+    var username = req.params.username;
+    const dev: Dev = await devService.findByUsername(username);
+    return res.json(dev);
+  }
+
+  async techs(req: Request, res: Response) {
+    const { techs } = req.body;
+    const techsArray: Array<string> = parseStringToArray(techs);
+
+    const devs: Array<Dev> = await devService.searchByTechs(techsArray);
+
+    return res.json(devs);
+  }
 }
 
 export default new SearchController();

@@ -15,8 +15,10 @@ routes.get('/status', StatusController.status);
 
 routes.get('/devs', DevController.index);
 routes.post('/devs', DevController.store);
+routes.get('/devs/:username', SearchController.username);
 
 routes.post('/search', SearchController.index);
+routes.post('/search/techs', SearchController.techs);
 
 routes.use(authMiddleware);
 
