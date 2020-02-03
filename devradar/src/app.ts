@@ -9,13 +9,12 @@ import * as helmet from 'helmet';
 import * as morgan from 'morgan'; // log requests to the console
 import * as compression from 'compression';
 
-import fbConfig from './config/firebase';
+import fbConfig from './app/config/firebase';
 import * as firebase from 'firebase-admin';
 
 import 'express-async-errors';
 
 import routes from './routes';
-import admin = require('firebase-admin');
 
 export default class App {
   public server: Application;
@@ -25,10 +24,11 @@ export default class App {
     this.server = express();
 
     this.config();
+    this.database();
+
     this.middlewares();
     this.routes();
     this.exceptionHandler();
-    this.database();
   }
 
   private config() {
@@ -61,21 +61,21 @@ export default class App {
   private exceptionHandler() {
     this.server.use(
       async (
-        err: express.ErrorRequestHandler,
+        err: any,
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
       ) => {
         return res.status(500).json({
-          message: 'Erro interno não esperado',
-          error: JSON.stringify(err)
+          message: err.message || 'Erro interno não esperado',
+          error: err
         });
       }
     );
   }
 
   private database() {
-    firebase.initializeApp({ credential: admin.credential.cert(fbConfig) });
+    firebase.initializeApp({ credential: firebase.credential.cert(fbConfig) });
   }
 
   public listen() {

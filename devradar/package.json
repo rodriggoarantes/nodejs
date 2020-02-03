@@ -1,15 +1,15 @@
 {
-  "name": "finddev",
+  "name": "devradar",
   "version": "1.0.0",
-  "repository": "https://github.com/rodriggoarantes/findev.git",
+  "repository": "https://github.com/rodriggoarantes/nodejs.git",
   "author": "rodrigo.arantes <rodrigo.arantes@totvs.com.br>",
   "license": "MIT",
   "scripts": {
+    "build": "tsc -p .",
     "dev": "nodemon",
-    "start": "ts-node src/server.ts",
-    "build": "tsc",
-    "serve": "node lib/server.js",
-    "postinstall": "npm run build"
+    "start": "ts-node ./src/server.ts",
+    "serve": "node ./lib/server.js",
+    "heroku-postbuild": "npm run build"
   },
   "main": "lib/server.js",
   "dependencies": {
@@ -21,10 +21,14 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-handlebars": "^3.1.0",
+    "firebase": "^7.7.0",
     "firebase-admin": "^8.9.0",
+    "geofirex": "^0.1.0",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
-    "morgan": "^1.9.1"
+    "module-alias": "^2.2.2",
+    "morgan": "^1.9.1",
+    "rxjs": "^6.5.4"
   },
   "devDependencies": {
     "@types/compression": "^1.0.1",
@@ -58,5 +62,8 @@
     ],
     "exec": "npm start",
     "ext": "ts"
+  },
+  "_moduleAliases": {
+    "@app": "lib/app"
   }
 }
