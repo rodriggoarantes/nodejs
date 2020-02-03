@@ -1,3 +1,14 @@
+## Compiled JavaScript files
+**/*.js
+**/*.js.map
+
+# Typescript v1 declaration files
+typings/
+
+node_modules/
+
+.runtimeconfig.json
+
 # Logs
 logs
 *.log
@@ -65,3 +76,7 @@ yarn.lock
 tmp/
 
 functions/code
+
+lib/
+
+.vscode/
