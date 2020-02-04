@@ -3,7 +3,11 @@ import 'dotenv/config';
 import * as dotenv from 'dotenv';
 import * as express from 'express';
 import { Application } from 'express';
+
 import * as cors from 'cors';
+import * as helmet from 'helmet';
+import * as morgan from 'morgan'; // log requests to the console
+import * as compression from 'compression';
 
 import fbConfig from './config/firebase';
 import * as firebase from 'firebase-admin';
@@ -37,6 +41,13 @@ export default class App {
     // CORS
     this.server.use(cors());
     this.server.use(express.json());
+    this.server.use(helmet());
+
+    if (process.env.NODE_ENV === 'develop') {
+      this.server.use(morgan('dev'));
+    } else {
+      this.server.use(compression());
+    }
   }
 
   private routes() {
@@ -51,9 +62,10 @@ export default class App {
         res: express.Response,
         next: express.NextFunction
       ) => {
+        const error = typeof err === 'string' ? err : JSON.stringify(err);
         return res.status(500).json({
           message: 'Erro interno não esperado',
-          error: JSON.stringify(err)
+          error
         });
       }
     );

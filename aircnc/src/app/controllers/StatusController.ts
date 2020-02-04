@@ -12,7 +12,7 @@ class StatusController {
   }
 
   async status(_: Request, res: Response) {
-    return res.json(<Status>{ app: 'AIRCNC', time: new Date() });
+    return res.json(<Status>{ app: 'AIRCNC - Work Spots', time: new Date() });
   }
 }
 
