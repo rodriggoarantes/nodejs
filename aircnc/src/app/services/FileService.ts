@@ -1,5 +1,6 @@
 import * as firebase from 'firebase-admin';
 import { resolve } from 'path';
+import { unlink } from 'fs';
 
 class FileService {
   private storageBucket: any = null;
@@ -20,6 +21,10 @@ class FileService {
       metadata: {
         cacheControl: 'public, max-age=31536000'
       }
+    });
+
+    unlink(destination, () => {
+      console.log(`Arquivo deletado do disco: ${filename}`);
     });
 
     return {
