@@ -72,7 +72,10 @@ export default class App {
   }
 
   private database() {
-    firebase.initializeApp({ credential: admin.credential.cert(fbConfig) });
+    firebase.initializeApp({
+      credential: admin.credential.cert(fbConfig.firebase),
+      storageBucket: fbConfig.bucket
+    });
   }
 
   public listen() {

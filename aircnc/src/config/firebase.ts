@@ -6,4 +6,7 @@ const firebase = () => {
   return serviceAccount;
 };
 
-export default firebase();
+export default {
+  firebase: firebase(),
+  bucket: process.env.FIREBASE_BUCKET
+};

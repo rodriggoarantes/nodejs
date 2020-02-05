@@ -73,10 +73,13 @@ typings/
 
 yarn.lock
 
-tmp/
-
 functions/code
 
 lib/
 
 .vscode/
+
+# don't ignore keep files
+tmp/*
+!tmp/.keep
+
