@@ -1,5 +1,3 @@
-import User from './User';
-
 export interface Spot {
   _id?: string;
   name: string;
@@ -7,7 +5,7 @@ export interface Spot {
   company: string;
   price: number;
   techs: Array<string>;
-  user: User;
+  user: string;
 }
 
 export default Spot;

@@ -22,6 +22,7 @@ routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.session);
 
 routes.get('/spots', SpotsController.index);
+routes.post('/spots', upload.single('thumbnail'), SpotsController.store);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
