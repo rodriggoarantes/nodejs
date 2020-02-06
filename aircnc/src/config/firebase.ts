@@ -8,5 +8,6 @@ const firebase = () => {
 
 export default {
   firebase: firebase(),
+  databaseURL: process.env.FIREBASE_DBURL,
   bucket: process.env.FIREBASE_BUCKET
 };

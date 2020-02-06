@@ -6,16 +6,15 @@ import { Application } from 'express';
 
 import * as cors from 'cors';
 import * as helmet from 'helmet';
-import * as morgan from 'morgan'; // log requests to the console
+import * as morgan from 'morgan';
 import * as compression from 'compression';
 
 import fbConfig from './config/firebase';
-import * as firebase from 'firebase-admin';
+import * as admin from 'firebase-admin';
 
 import 'express-async-errors';
 
 import routes from './routes';
-import admin = require('firebase-admin');
 
 export default class App {
   public server: Application;
@@ -72,8 +71,9 @@ export default class App {
   }
 
   private database() {
-    firebase.initializeApp({
+    admin.initializeApp({
       credential: admin.credential.cert(fbConfig.firebase),
+      databaseURL: fbConfig.databaseURL,
       storageBucket: fbConfig.bucket
     });
   }
