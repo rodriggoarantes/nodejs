@@ -13,7 +13,7 @@ class SpotController {
   }
 
   async store(req: Request, res: Response) {
-    const { name, company, price, techs } = req.body;
+    const { name, company, price, techs, user } = req.body;
     const { originalname, buffer } = req.file;
     if (!originalname) {
       return res
