@@ -12,11 +12,16 @@ class UserService {
     return this.firestoreDb.collection('users');
   }
 
-  async findById(id: string) {
+  async findById(id: string): Promise<User> {
     const refDoc = this.getRef().doc(id);
     const result = await refDoc.get();
 
-    // TODO
+    if (result && !result.empty) {
+      const { id, data } = result;
+      return <User>{ _id: id, ...data };
+    }
+
+    return <User>{};
   }
 
   async findByName(name: string): Promise<User> {
