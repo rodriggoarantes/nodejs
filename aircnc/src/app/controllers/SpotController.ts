@@ -14,14 +14,19 @@ class SpotController {
   }
 
   async store(req: Request, res: Response) {
-    const { name, company, price, techs, user } = req.body;
+    const { name, company, price, techs } = req.body;
     const { originalname, buffer } = req.file;
     if (!originalname) {
       throw 'Imagem não informada para o local';
     }
 
+    const user: string = req.header('user_id');
+    if (!user) {
+      throw 'Usuario não informado';
+    }
+
     const usuarioExistente = await userService.findById(user);
-    if (usuarioExistente && usuarioExistente._id) {
+    if (!usuarioExistente || !usuarioExistente._id) {
       throw 'Usuario proprietario do local não encontrado';
     }
 
@@ -30,6 +35,7 @@ class SpotController {
       name,
       company,
       price,
+      user,
       techs: parseStringToArray(techs),
       thumbnail: fileUploaded.url
     };

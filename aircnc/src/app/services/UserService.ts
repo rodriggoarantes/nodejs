@@ -16,9 +16,9 @@ class UserService {
     const refDoc = this.getRef().doc(id);
     const result = await refDoc.get();
 
-    if (result && !result.empty) {
-      const { id, data } = result;
-      return <User>{ _id: id, ...data };
+    if (result && result.exists) {
+      const userData = result.data();
+      return <User>{ _id: result.id, ...userData };
     }
 
     return <User>{};
