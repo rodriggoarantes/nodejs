@@ -18,14 +18,44 @@ class SpotService {
     return { _id: doc.id, ...obj };
   }
 
-  async list(): Promise<Array<Spot>> {
-    const result = await this.getRef().get();
-    if (!result.empty) {
-      const listaDevs: Array<Spot> = new Array();
+  async fromUser(user: string): Promise<Array<Spot>> {
+    if (!user) throw 'Usuário não informado';
+
+    const spots = this.getRef().where('user', '==', user);
+    const result = await spots.get();
+    return this.parseResult(result);
+  }
+
+  async list(name: string, tech: string): Promise<Array<Spot>> {
+    let spots = this.getRef();
+
+    if (name) {
+      spots = spots.where('name_search', '==', name.toUpperCase());
+    }
+    if (tech) {
+      spots = spots.where('techs_search', 'array-contains', tech.toUpperCase());
+    }
+
+    const result = await spots.get();
+    return this.parseResult(result);
+  }
+
+  private parseResult(result: any): Array<Spot> {
+    if (result && !result.empty) {
+      const listaSpots: Array<Spot> = new Array();
       result.forEach((element: any) => {
-        listaDevs.push({ _id: element.id, ...element.data() });
+        const { company, name, user, techs, price, thumbnail } = element.data();
+        listaSpots.push({
+          _id: element.id,
+          company,
+          name,
+          user,
+          techs,
+          price,
+          thumbnail
+        });
       });
-      return listaDevs;
+      return listaSpots;
     }
     return [];
   }

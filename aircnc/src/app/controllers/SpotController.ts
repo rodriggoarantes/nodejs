@@ -8,8 +8,9 @@ import Spot from '@app/models/Spot';
 import userService from '@app/services/UserService';
 
 class SpotController {
-  async index(_: Request, res: Response) {
-    const list: Array<Spot> = await spotService.list();
+  async index(req: Request, res: Response) {
+    const { tech, name } = req.query;
+    const list: Array<Spot> = await spotService.list(name, tech);
     return res.status(200).json(list);
   }
 
@@ -33,10 +34,12 @@ class SpotController {
     const fileUploaded = await fileService.uploadStream(buffer, originalname);
     const spot = <Spot>{
       name,
+      name_search: name.toUpperCase(),
       company,
       price,
       user,
       techs: parseStringToArray(techs),
+      techs_search: parseStringToArray(techs.toUpperCase()),
       thumbnail: fileUploaded.url
     };
     const saved = await spotService.store(spot);

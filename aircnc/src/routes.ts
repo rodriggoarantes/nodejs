@@ -8,6 +8,7 @@ import SpotsController from '@app/controllers/SpotController';
 import SessionController from '@app/controllers/SessionController';
 import UserController from '@app/controllers/UserController';
 import FileController from '@app/controllers/FileController';
+import ProfileController from '@app/controllers/ProfileController';
 
 import multerConfig from './config/multer';
 
@@ -23,6 +24,8 @@ routes.post('/sessions', SessionController.session);
 
 routes.get('/spots', SpotsController.index);
 routes.post('/spots', upload.single('thumbnail'), SpotsController.store);
+
+routes.get('/profiles/spots', ProfileController.spots);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
