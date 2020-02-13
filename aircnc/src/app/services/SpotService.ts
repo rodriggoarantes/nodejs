@@ -12,6 +12,18 @@ class SpotService {
     return this.firestoreDb.collection('spots');
   }
 
+  async findById(id: string): Promise<Spot> {
+    const refDoc = this.getRef().doc(id);
+    const result = await refDoc.get();
+
+    if (result && result.exists) {
+      const objData: Spot = result.data();
+      return <Spot>{ _id: result.id, ...objData };
+    }
+
+    return <Spot>{};
+  }
+
   async store(obj: Spot): Promise<Spot> {
     const doc = await this.getRef().doc();
     await doc.set(obj);

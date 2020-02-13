@@ -11,6 +11,7 @@ import FileController from '@app/controllers/FileController';
 import ProfileController from '@app/controllers/ProfileController';
 
 import multerConfig from './config/multer';
+import BookingController from '@app/controllers/BookingController';
 
 const routes = Router();
 const upload = multer(multerConfig);
@@ -24,16 +25,15 @@ routes.post('/sessions', SessionController.session);
 
 routes.get('/spots', SpotsController.index);
 routes.post('/spots', upload.single('thumbnail'), SpotsController.store);
+routes.post('/spots/:id/bookings', BookingController.store);
 
 routes.get('/profiles/spots', ProfileController.spots);
-
-routes.post('/files', upload.single('file'), FileController.store);
 
 // ----------------- auth routes ------------------------
 routes.use(authMiddleware);
 
 routes.get('/users', UserController.index);
 
-routes.post('/spots', SpotsController.store);
+routes.post('/files', upload.single('file'), FileController.store);
 
 export default routes;
