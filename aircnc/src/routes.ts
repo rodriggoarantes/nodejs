@@ -4,14 +4,14 @@ import * as multer from 'multer';
 import authMiddleware from '@app/middleware/auth';
 
 import StatusController from '@app/controllers/StatusController';
-import SpotsController from '@app/controllers/SpotController';
 import SessionController from '@app/controllers/SessionController';
-import UserController from '@app/controllers/UserController';
 import FileController from '@app/controllers/FileController';
+import UserController from '@app/controllers/UserController';
+import SpotsController from '@app/controllers/SpotController';
 import ProfileController from '@app/controllers/ProfileController';
+import BookingController from '@app/controllers/BookingController';
 
 import multerConfig from './config/multer';
-import BookingController from '@app/controllers/BookingController';
 
 const routes = Router();
 const upload = multer(multerConfig);
