@@ -18,6 +18,18 @@ class SpotController {
   async store(req: Request, res: Response) {
     const { name, company, price, techs } = req.body;
 
+    if (!name) {
+      throw 'Nome do local é obrigatório';
+    }
+    if (!company) {
+      throw 'Empresa proprietaria nao informada';
+    }
+
+    const techsList = parseStringToArray(techs);
+    if (!techsList || !techsList.length) {
+      throw 'Lista de tecnologias do local não é válido';
+    }
+
     const user: string = req.header('user_id');
     if (!user) {
       throw 'Usuario não informado';
@@ -33,9 +45,7 @@ class SpotController {
       !req.files['thumbnail'] ||
       !req.files['thumbnail'].length
     ) {
-      return res
-        .status(401)
-        .json({ message: 'Imagem não informada para o local' });
+      throw 'Imagem não informada para o local';
     }
 
     const arquivo: File = req.files['thumbnail'][0];
@@ -50,7 +60,7 @@ class SpotController {
       company,
       price,
       user,
-      techs: parseStringToArray(techs),
+      techs: techsList,
       techs_search: parseStringToArray(techs.toUpperCase()),
       thumbnail: fileUploaded.url
     };
