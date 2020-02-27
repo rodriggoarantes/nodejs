@@ -1,16 +1,25 @@
 import { Request, Response } from 'express';
 
+import { File } from '@app/middleware/upload';
+
 import fileService from '@app/services/FileService';
 
 class FileController {
   async store(req: Request, res: Response) {
-    const { originalname, buffer } = req.file;
-    if (!originalname) {
-      return res.status(401).json({ message: 'Campos informados inválidos' });
+    if (!req.files) {
+      return res.status(401).json({ message: 'file not found' });
     }
 
-    const file = await fileService.uploadStream(buffer, originalname);
-    return res.json(file);
+    if (req.files && req.files['file'] && req.files['file'].length) {
+      const arquivo: File = req.files['file'][0];
+
+      const file = await fileService.uploadStream(
+        arquivo.buffer,
+        arquivo.filename
+      );
+      return res.json(file);
+    }
+    return res.status(401).json({ message: 'Campos informados inválidos' });
   }
 }
 

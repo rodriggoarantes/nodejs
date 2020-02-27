@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import { File } from '@app/middleware/upload';
 import { parseStringToArray } from '@app/util/Utils';
 import spotService from '@app/services/SpotService';
 import fileService from '@app/services/FileService';
@@ -16,10 +17,6 @@ class SpotController {
 
   async store(req: Request, res: Response) {
     const { name, company, price, techs } = req.body;
-    const { originalname, buffer } = req.file;
-    if (!originalname) {
-      throw 'Imagem não informada para o local';
-    }
 
     const user: string = req.header('user_id');
     if (!user) {
@@ -31,7 +28,22 @@ class SpotController {
       throw 'Usuario proprietario do local não encontrado';
     }
 
-    const fileUploaded = await fileService.uploadStream(buffer, originalname);
+    if (
+      !req.files ||
+      !req.files['thumbnail'] ||
+      !req.files['thumbnail'].length
+    ) {
+      return res
+        .status(401)
+        .json({ message: 'Imagem não informada para o local' });
+    }
+
+    const arquivo: File = req.files['thumbnail'][0];
+    const fileUploaded = await fileService.uploadStream(
+      arquivo.buffer,
+      arquivo.filename
+    );
+
     const spot = <Spot>{
       name,
       name_search: name.toUpperCase(),

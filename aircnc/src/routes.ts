@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import * as multer from 'multer';
 
 import authMiddleware from '@app/middleware/auth';
+import uploadFileMiddleware from '@app/middleware/upload';
 
 import StatusController from '@app/controllers/StatusController';
 import SessionController from '@app/controllers/SessionController';
@@ -11,10 +11,7 @@ import SpotsController from '@app/controllers/SpotController';
 import ProfileController from '@app/controllers/ProfileController';
 import BookingController from '@app/controllers/BookingController';
 
-import multerConfig from './config/multer';
-
 const routes = Router();
-const upload = multer(multerConfig);
 
 // ----------------- public routes ------------------------
 routes.get('', StatusController.redirect);
@@ -24,16 +21,16 @@ routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.session);
 
 routes.get('/spots', SpotsController.index);
-routes.post('/spots', upload.single('thumbnail'), SpotsController.store);
+routes.post('/spots', uploadFileMiddleware, SpotsController.store);
 routes.post('/spots/:id/bookings', BookingController.store);
 
 routes.get('/profiles/spots', ProfileController.spots);
+
+routes.post('/files', uploadFileMiddleware, FileController.store);
 
 // ----------------- auth routes ------------------------
 routes.use(authMiddleware);
 
 routes.get('/users', UserController.index);
-
-routes.post('/files', upload.single('file'), FileController.store);
 
 export default routes;
