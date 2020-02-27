@@ -66,6 +66,9 @@
     "exec": "npm start",
     "ext": "ts"
   },
+  "engines": {
+    "node": "10"
+  },
   "_moduleAliases": {
     "@config": "lib/config",
     "@app": "lib/app"
