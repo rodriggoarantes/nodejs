@@ -11,7 +11,7 @@
     "serve": "node ./lib/server.js",
     "heroku-postbuild": "npm run build"
   },
-  "main": "lib/index.js",
+  "main": "lib/server.js",
   "dependencies": {
     "axios": "^0.19.1",
     "cors": "^2.8.5",
@@ -42,9 +42,6 @@
     "prettier": "^1.18.2",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.4"
-  },
-  "engines": {
-    "node": "10"
   },
   "private": true,
   "nodemonConfig": {
