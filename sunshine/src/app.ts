@@ -5,6 +5,9 @@ import * as dotenv from 'dotenv';
 import * as express from 'express';
 import { Application } from 'express';
 import * as cors from 'cors';
+import * as helmet from 'helmet';
+import * as morgan from 'morgan'; // log requests to the console
+import * as compression from 'compression';
 
 import fbConfig from './config/firebase';
 import * as firebase from 'firebase-admin';
@@ -12,20 +15,26 @@ import * as firebase from 'firebase-admin';
 import 'express-async-errors';
 
 import routes from './routes';
-import admin = require('firebase-admin');
 
 export default class App {
   public server: Application;
   public port: number = 3333;
 
   constructor() {
-    dotenv.config();
     this.server = express();
+
+    this.config();
+    this.database();
 
     this.middlewares();
     this.routes();
     this.exceptionHandler();
-    this.database();
+  }
+
+  private config() {
+    dotenv.config();
+    process.env.NODE_ENV = process.env.NODE_ENV || 'develop';
+    process.env.PORT = process.env.PORT || String(this.port);
   }
 
   private middlewares() {
@@ -36,6 +45,13 @@ export default class App {
       '/files',
       express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
     );
+    this.server.use(helmet());
+
+    if (process.env.NODE_ENV === 'develop') {
+      this.server.use(morgan('dev')); // log every request to the console
+    } else {
+      this.server.use(compression());
+    }
   }
 
   private routes() {
@@ -59,12 +75,12 @@ export default class App {
   }
 
   private database() {
-    firebase.initializeApp({ credential: admin.credential.cert(fbConfig) });
+    firebase.initializeApp({ credential: firebase.credential.cert(fbConfig) });
   }
 
   public listen() {
-    this.server.listen(this.port, () => {
-      console.log(`App listening on the http://localhost:${this.port}`);
+    this.server.listen(process.env.PORT, () => {
+      console.log(`App listening on the http://localhost:${process.env.PORT}`);
     });
   }
 }
