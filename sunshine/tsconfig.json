@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "lib": ["es2018"],
+    "module": "commonjs",
+    "target": "es2018",
+    "baseUrl": "src",
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "removeComments": true,
+    "experimentalDecorators": true,
+    "noImplicitReturns": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "noUnusedLocals": true,
+    "types": ["node"],
+    "typeRoots": ["node_modules/@types"]
+  },
+  "resolveJsonModuletrue": true,
+  "compileOnSave": true,
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "public", ".vscode"]
+}
