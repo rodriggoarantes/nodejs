@@ -1,10 +1,50 @@
+import * as firebase from 'firebase-admin';
 import axios from 'axios';
 import Country from 'app/models/Country';
 
 class CountryService {
-  private countryApi: string = 'https://restcountries.eu/rest/v2';
+  private readonly countryApi: string = 'https://restcountries.eu/rest/v2';
+
+  private db: any = null;
+
+  private collection() {
+    if (!this.db) {
+      this.db = firebase.firestore();
+    }
+    return this.db.collection('countries');
+  }
 
   async list(): Promise<Array<Country>> {
+    let list: Array<Country> = [];
+    list = await this.listCache();
+
+    if (list.length === 0) {
+      list = await this.search();
+      this.store(list);
+    }
+    return list;
+  }
+
+  async random(): Promise<Array<Country>> {
+    let list: Array<Country> = [];
+    list = await this.listCache();
+
+    if (list.length === 0) {
+      list = await this.search();
+      this.store(list);
+    }
+    return list;
+  }
+
+  private async store(countries: Array<Country>) {
+    console.log('cadastrando-paises');
+    countries.forEach(item => {
+      const ref = this.collection().doc();
+      ref.set({ _id: ref.id, ...item });
+    });
+  }
+
+  private async search(): Promise<Array<Country>> {
     const response = await axios.get(`${this.countryApi}/all`);
 
     let list: Array<Country> = [];
@@ -21,6 +61,20 @@ class CountryService {
       );
     }
     return list;
+  }
+
+  private async listCache(): Promise<Array<Country>> {
+    const result = await this.collection()
+      .orderBy('name', 'asc')
+      .get();
+    if (!result.empty) {
+      const list: Array<Country> = new Array();
+      result.forEach((element: any) => {
+        list.push(element.data());
+      });
+      return list;
+    }
+    return [];
   }
 }
 
