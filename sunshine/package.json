@@ -5,14 +5,11 @@
   "author": "rodrigo.arantes <rodrigo.arantes@totvs.com.br>",
   "license": "MIT",
   "scripts": {
+    "build": "tsc -p .",
     "dev": "nodemon",
-    "start": "ts-node src/server.ts",
-    "build": "tsc",
-    "servejs": "ts-node dist/server.js",
-    "serve": "npm run build && firebase serve --only functions",
-    "shell": "npm run build && firebase functions:shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "start": "ts-node ./src/server.ts",
+    "serve": "node ./lib/server.js",
+    "heroku-postbuild": "npm run build"
   },
   "main": "lib/index.js",
   "dependencies": {
