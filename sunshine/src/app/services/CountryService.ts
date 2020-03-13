@@ -25,15 +25,16 @@ class CountryService {
     return list;
   }
 
-  async random(): Promise<Array<Country>> {
-    let list: Array<Country> = [];
-    list = await this.listCache();
-
-    if (list.length === 0) {
-      list = await this.search();
-      this.store(list);
+  async random(): Promise<Country> {
+    const list: Array<Country> = await this.listCache();
+    const tamanho = list.length;
+    let randomItem = <Country>{};
+    if (tamanho) {
+      const random = Math.random();
+      const floored = Math.floor(random * tamanho);
+      randomItem = list[floored];
     }
-    return list;
+    return randomItem;
   }
 
   private async store(countries: Array<Country>) {

@@ -9,6 +9,7 @@ const routes = Router();
 routes.get(['', '/status'], StatusController.status);
 
 routes.get('/countries', CountryController.index);
+routes.get('/countries/random', CountryController.findRandom);
 
 routes.use(authMiddleware);
 
