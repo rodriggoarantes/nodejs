@@ -1,6 +1,7 @@
 import * as firebase from 'firebase-admin';
 import axios from 'axios';
 import Country from 'app/models/Country';
+import UtilService from './UtilService';
 
 class CountryService {
   private readonly countryApi: string = 'https://restcountries.eu/rest/v2';
@@ -38,10 +39,13 @@ class CountryService {
   }
 
   private async store(countries: Array<Country>) {
-    console.log('cadastrando-paises');
     countries.forEach(item => {
       const ref = this.collection().doc();
-      ref.set({ _id: ref.id, ...item });
+      ref.set({
+        _id: ref.id,
+        ...item,
+        name_search: UtilService.normalizeValue(item.name)
+      });
     });
   }
 
@@ -57,7 +61,8 @@ class CountryService {
             capital: item.capital,
             flag: item.flag,
             region: item.region,
-            translations: item.translations
+            translations: item.translations,
+            code: item.alpha2Code
           }
       );
     }
