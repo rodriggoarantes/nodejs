@@ -38,6 +38,21 @@ class CountryService {
     return randomItem;
   }
 
+  async findByCode(code: string): Promise<Country> {
+    const result = await this.collection()
+      .where('code', '==', code.toUpperCase())
+      .limit(1)
+      .get();
+
+    let country = <Country>{};
+    if (!result.empty) {
+      result.forEach((element: any) => {
+        country = { ...country, ...element.data() };
+      });
+    }
+    return country;
+  }
+
   private async store(countries: Array<Country>) {
     countries.forEach(item => {
       const ref = this.collection().doc();

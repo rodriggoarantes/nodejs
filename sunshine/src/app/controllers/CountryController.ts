@@ -22,6 +22,23 @@ class CountryController {
       return res.status(404).json({ mensagem: 'Nenhum registro encontrado' });
     }
   }
+
+  async findByCode(req: Request, res: Response) {
+    const { code } = req.params;
+
+    console.log(`code : ${code}`);
+
+    if (!code) {
+      throw 'Codigo para pesquisa do pais é obrigatorio';
+    }
+
+    const pais: Country = await countryService.findByCode(code);
+    if (pais && pais._id) {
+      return res.status(200).json(pais);
+    } else {
+      return res.status(404).json({ mensagem: 'Nenhum registro encontrado' });
+    }
+  }
 }
 
 export default new CountryController();

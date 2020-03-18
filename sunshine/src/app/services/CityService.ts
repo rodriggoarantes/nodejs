@@ -1,9 +1,11 @@
 import * as firebase from 'firebase-admin';
 import axios from 'axios';
 
+import countryService from './CountryService';
 import utilService from './UtilService';
 
 import City from 'app/models/City';
+import Country from 'app/models/Country';
 
 class CityService {
   private readonly api: string =
@@ -58,10 +60,29 @@ class CityService {
     }
   }
 
+  async findById(id: string): Promise<City> {
+    const refDoc = this.collection().doc(id);
+    const result = await refDoc.get();
+
+    if (result && result.exists) {
+      const objData: City = result.data();
+      return <City>{ _id: result.id, ...objData };
+    }
+    return <City>{};
+  }
+
   private async store(cities: Array<City>) {
     console.log('cadastrando-cidades');
-    cities.forEach(item => {
-      // TODO buscar pais existente
+    cities.forEach(async item => {
+      if (item.countryCode) {
+        const country: Country = await countryService.findByCode(
+          item.countryCode
+        );
+        if (country && country._id) {
+          item.country_id = country._id;
+        }
+      }
+
       const ref = this.collection().doc();
       ref.set({
         _id: ref.id,

@@ -21,6 +21,21 @@ class CityController {
       return res.status(404).json({ mensagem: 'Nenhum registro encontrado' });
     }
   }
+
+  async find(req: Request, res: Response) {
+    const { id } = req.params;
+    if (!id) {
+      throw 'Identificador da cidade deve ser informado';
+    }
+
+    const city: City = await cityService.findById(id);
+
+    if (city._id) {
+      return res.status(200).json(city);
+    } else {
+      return res.status(404).json({ mensagem: 'Nenhum registro encontrado' });
+    }
+  }
 }
 
 export default new CityController();
