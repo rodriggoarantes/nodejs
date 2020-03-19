@@ -19,6 +19,7 @@ class WeatherService {
     try {
       const weather: Weather = await weatherApi.getWeather(city.name);
 
+      // TODO obter os dados do primeiro forecast e persistir os forecasts
       const weatherEntity = <Weather>{
         ...weather,
         city: city.name,
