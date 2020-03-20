@@ -1,5 +1,3 @@
-import Forecast from './Forecast';
-
 interface Weather {
   _id?: string;
   city: string;
@@ -8,8 +6,7 @@ interface Weather {
   temp: number;
   min: number;
   max: number;
-  dt: Date;
-  forecasts?: Array<Forecast>;
+  dt: number;
 }
 
 export default Weather;

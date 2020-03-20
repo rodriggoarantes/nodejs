@@ -13,7 +13,7 @@
     "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "types": ["node"],
     "typeRoots": ["node_modules/@types"]
   },

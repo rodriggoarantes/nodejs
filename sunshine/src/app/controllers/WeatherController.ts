@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 
 import { City } from './../models/City';
-import apiService from './../services/WeatherApiService';
+
+import weatherService from './../services/WeatherService';
 import cityService from './../services/CityService';
 
 class WeatherController {
@@ -13,7 +14,11 @@ class WeatherController {
     }
 
     const city: City = await cityService.findById(id);
-    const weather = await apiService.getWeather(city.name);
+    if (!city || !city._id) {
+      throw 'Cidade informada não encontrada';
+    }
+
+    const weather = await weatherService.weatherByCity(city);
 
     if (weather) {
       return res.status(200).json(weather);
