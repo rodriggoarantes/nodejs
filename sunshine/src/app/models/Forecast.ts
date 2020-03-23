@@ -11,6 +11,7 @@ interface Forecast {
   pressure: number;
   humidity: number;
   wind_speed: number;
+  counter?: number;
 }
 
 export default Forecast;

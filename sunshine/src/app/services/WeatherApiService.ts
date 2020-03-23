@@ -86,7 +86,7 @@ class WeatherApiService {
       forecast = <Forecast>{
         city: item.name,
         state: item.weather && item.weather[0] ? item.weather[0].main : 'Clear',
-        temp: item.main.temp,
+        temp: Math.round(item.main.temp * 100) / 100,
         min: item.main.temp_min,
         max: item.main.temp_max,
         pressure: item.main.pressure,
