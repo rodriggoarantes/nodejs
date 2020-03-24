@@ -8,6 +8,8 @@ import Forecast from 'app/models/Forecast';
 
 import cityService from './CityService';
 import weatherApi from './WeatherApiService';
+import pictureService from './PictureService';
+import Picture from 'app/models/Picture';
 
 class WeatherService {
   private db: any = null;
@@ -93,11 +95,14 @@ class WeatherService {
       .get();
 
     const cached: boolean = result && !result.empty;
+    let picture: Picture = <Picture>{};
     let city: City = <City>{};
     if (cached) {
       result.forEach((element: any) => {
-        city._id = element.data().city_id;
-        city.name = element.data().city_name;
+        const data = element.data();
+        city._id = data.city_id;
+        city.name = data.city_name;
+        picture = data.picture;
         return;
       });
     } else {
@@ -107,7 +112,11 @@ class WeatherService {
     let weather: Weather = <Weather>{};
     if (city && city._id) {
       weather = await this.weatherByCity(city);
+      weather.city_picture = picture;
       if (!cached) {
+        const pic: Picture = await pictureService.getRandom(city.name);
+        weather.city_picture = pic;
+
         const ref = collection.doc();
         ref.set({
           _id: ref.id,
@@ -115,7 +124,8 @@ class WeatherService {
           city_name: city.name,
           year,
           month,
-          week
+          week,
+          picture
         });
       }
     }

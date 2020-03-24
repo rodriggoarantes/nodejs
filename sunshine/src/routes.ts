@@ -6,6 +6,7 @@ import CountryController from './app/controllers/CountryController';
 import CityController from './app/controllers/CityController';
 import WeatherController from './app/controllers/WeatherController';
 import ForecastController from './app/controllers/ForecastController';
+import PictureController from './app/controllers/PictureController';
 
 const routes = Router();
 
@@ -21,6 +22,8 @@ routes.get('/cities/:id', CityController.find);
 routes.get('/weathers/suggested', WeatherController.suggested);
 routes.get('/weathers/cities/:id', WeatherController.findByCity);
 routes.get('/forecasts/cities/:id', ForecastController.findByCity);
+
+routes.get('/pictures', PictureController.find);
 
 routes.use(authMiddleware);
 
