@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
-import { City } from './../models/City';
+import City from 'app/models/City';
+import Weather from 'app/models/Weather';
 
 import weatherService from './../services/WeatherService';
 import cityService from './../services/CityService';
@@ -20,6 +21,15 @@ class WeatherController {
 
     const weather = await weatherService.weatherByCity(city);
 
+    if (weather) {
+      return res.status(200).json(weather);
+    } else {
+      return res.status(404).json({ mensagem: 'Nenhum registro encontrado' });
+    }
+  }
+
+  async suggested(_: Request, res: Response) {
+    const weather: Weather = await weatherService.weatherSuggested();
     if (weather) {
       return res.status(200).json(weather);
     } else {

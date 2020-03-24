@@ -1,11 +1,12 @@
 import * as firebase from 'firebase-admin';
 
-import { differenceInHours, format } from 'date-fns';
+import { differenceInHours, format, getWeekOfMonth } from 'date-fns';
 
 import City from 'app/models/City';
 import Weather from 'app/models/Weather';
 import Forecast from 'app/models/Forecast';
 
+import cityService from './CityService';
 import weatherApi from './WeatherApiService';
 
 class WeatherService {
@@ -30,9 +31,16 @@ class WeatherService {
     if (city && city._id) {
       const cached: Weather = await this.findByCity(city._id);
       if (cached._id) {
-        const difHours = differenceInHours(cached.dt, new Date());
-        console.log(`Weather Horas [cached] :: ${difHours}`);
-        if (difHours <= 3) {
+        const cachedDate = new Date(cached.dt);
+        const nowDate = new Date();
+        const difHours = differenceInHours(cachedDate, new Date());
+        console.log(
+          `Weather [cached] - Cached:Now :: ${format(
+            cachedDate,
+            'dd/MM/yyyy HH:mm'
+          )} | ${format(nowDate, 'dd/MM/yyyy HH:mm')} | dif ${difHours}`
+        );
+        if (difHours >= 0) {
           return cached;
         }
       }
@@ -41,23 +49,24 @@ class WeatherService {
     }
 
     try {
-      const obj: Weather = await weatherApi.getWeather(city.name);
-      const actualyForecast = await weatherApi.getForecast(obj.city, 1);
+      const weather: Weather = await weatherApi.getWeather(city.name);
+      console.log(`WEATHER: ${JSON.stringify(weather)}`);
+      const actualyForecast = await weatherApi.getForecast(weather.city, 1);
       if (actualyForecast && actualyForecast.length) {
         const first = actualyForecast[0];
-        obj.temp = first.temp;
-        obj.state = first.state;
-        obj.max = first.max;
-        obj.min = first.min;
+        weather.temp = first.temp;
+        weather.max = first.max;
+        weather.min = first.min;
+        weather.dt = first.dt;
         console.log(`FORECAST: ${JSON.stringify(first)}`);
       }
 
       const weatherEntity = <Weather>{
-        temp: obj.temp,
-        state: obj.state,
-        max: obj.max,
-        min: obj.min,
-        dt: obj.dt,
+        temp: weather.temp,
+        state: weather.state,
+        max: weather.max,
+        min: weather.min,
+        dt: weather.dt,
         city: city.name,
         city_id: city._id
       };
@@ -65,17 +74,66 @@ class WeatherService {
 
       return weatherEntity;
     } catch (error) {
-      throw `Erro ao buscar cidades por nome [${error}]`;
+      throw `Erro ao buscar previsao do tempo por cidade [${error}]`;
     }
   }
 
+  async weatherSuggested(): Promise<Weather> {
+    console.log('weatherSuggested');
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth();
+    const week: number = getWeekOfMonth(new Date());
+
+    const collection = this.ref().collection('suggested');
+    const result = await collection
+      .where('year', '==', year)
+      .where('month', '==', month)
+      .where('week', '==', week)
+      .limit(1)
+      .get();
+
+    const cached: boolean = result && !result.empty;
+    let city: City = <City>{};
+    if (cached) {
+      result.forEach((element: any) => {
+        city._id = element.data().city_id;
+        city.name = element.data().city_name;
+        return;
+      });
+    } else {
+      city = await cityService.random();
+    }
+
+    let weather: Weather = <Weather>{};
+    if (city && city._id) {
+      weather = await this.weatherByCity(city);
+      if (!cached) {
+        const ref = collection.doc();
+        ref.set({
+          _id: ref.id,
+          city_id: city._id,
+          city_name: city.name,
+          year,
+          month,
+          week
+        });
+      }
+    }
+
+    return weather;
+  }
   /**
-   * Lista a previsao do tempo paras cidades já cadastradas no sistema (firebase)
+   * Lista a previsao do tempo para as cidades já cadastradas no sistema (firebase)
    * @param cityId
    */
   private async findByCity(cityId: string): Promise<Weather> {
+    if (!cityId || !cityId.length) {
+      throw 'Identificador da cidade é obrigatorio';
+    }
+
     const result = await this.collection()
       .where('city_id', '==', cityId)
+      .where('dt', '>=', new Date().getTime())
       .orderBy('dt', 'asc')
       .limit(1)
       .get();

@@ -28,23 +28,29 @@ class WeatherApiService {
     count: number = 40,
     metric: 'metric' | 'imperial' = 'metric'
   ): Promise<Array<Forecast>> {
-    const response = await axios.get(`${this.forecastURL}`, {
-      params: {
-        q: cityName,
-        units: metric,
-        cnt: count
-      }
-    });
-
     const listForecasts: Array<Forecast> = [];
-    if (response.data) {
-      const { list, city } = response.data;
-      if (list && list.length) {
-        for (let item of list) {
-          item.name = city.name;
-          listForecasts.push(this._mapOpenForecast(item));
+    try {
+      const response = await axios.get(`${this.forecastURL}`, {
+        params: {
+          q: cityName,
+          units: metric,
+          cnt: count
+        }
+      });
+
+      if (response.data) {
+        const { list, city } = response.data;
+        if (list && list.length) {
+          for (let item of list) {
+            item.name = city.name;
+            listForecasts.push(this._mapOpenForecast(item));
+          }
         }
       }
+    } catch (error) {
+      console.log(
+        `Previsao do Tempo nao econtrada para cidade ${cityName} :: ${error}`
+      );
     }
     return listForecasts;
   }

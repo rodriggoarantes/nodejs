@@ -18,6 +18,7 @@ routes.get('/countries/code/:code', CountryController.findByCode);
 routes.get('/cities', CityController.search);
 routes.get('/cities/:id', CityController.find);
 
+routes.get('/weathers/suggested', WeatherController.suggested);
 routes.get('/weathers/cities/:id', WeatherController.findByCity);
 routes.get('/forecasts/cities/:id', ForecastController.findByCity);
 
