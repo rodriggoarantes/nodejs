@@ -2,14 +2,14 @@ import * as firebase from 'firebase-admin';
 
 import { differenceInHours, format, getWeekOfMonth } from 'date-fns';
 
-import City from 'app/models/City';
-import Weather from 'app/models/Weather';
-import Forecast from 'app/models/Forecast';
+import City from '@app/models/City';
+import Weather from '@app/models/Weather';
+import Forecast from '@app/models/Forecast';
+import Picture from '@app/models/Picture';
 
-import cityService from './CityService';
 import weatherApi from './WeatherApiService';
+import cityService from './CityService';
 import pictureService from './PictureService';
-import Picture from 'app/models/Picture';
 
 class WeatherService {
   private db: any = null;

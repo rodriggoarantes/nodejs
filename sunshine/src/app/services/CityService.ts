@@ -4,8 +4,8 @@ import axios from 'axios';
 import countryService from './CountryService';
 import utilService from './UtilService';
 
-import City from 'app/models/City';
-import Country from 'app/models/Country';
+import City from '@app/models/City';
+import Country from '@app/models/Country';
 
 class CityService {
   private readonly api: string =

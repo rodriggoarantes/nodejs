@@ -1,16 +1,19 @@
 import { Router } from 'express';
-import authMiddleware from './app/middleware/auth';
+import authMiddleware from '@app/middleware/auth';
 
-import StatusController from './app/controllers/StatusController';
-import CountryController from './app/controllers/CountryController';
-import CityController from './app/controllers/CityController';
-import WeatherController from './app/controllers/WeatherController';
-import ForecastController from './app/controllers/ForecastController';
-import PictureController from './app/controllers/PictureController';
+import StatusController from '@app/controllers/StatusController';
+import UserController from '@app/controllers/UserController';
+import CountryController from '@app/controllers/CountryController';
+import CityController from '@app/controllers/CityController';
+import WeatherController from '@app/controllers/WeatherController';
+import ForecastController from '@app/controllers/ForecastController';
+import PictureController from '@app/controllers/PictureController';
 
 const routes = Router();
 
 routes.get(['', '/status'], StatusController.status);
+
+routes.post('/users', UserController.create);
 
 routes.get('/countries', CountryController.index);
 routes.get('/countries/random', CountryController.findRandom);

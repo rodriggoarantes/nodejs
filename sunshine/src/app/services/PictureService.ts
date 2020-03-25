@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import Picture from 'app/models/Picture';
+import Picture from '@app/models/Picture';
 
 class PictureService {
   private readonly appID = `Client-ID ${process.env.UNSPLASH_API_KEY || ''}`;

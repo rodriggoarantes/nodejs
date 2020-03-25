@@ -1,6 +1,8 @@
 import * as firebase from 'firebase-admin';
 import axios from 'axios';
-import Country from 'app/models/Country';
+
+import Country from '@app/models/Country';
+
 import UtilService from './UtilService';
 
 class CountryService {

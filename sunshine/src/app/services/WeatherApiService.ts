@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { format } from 'date-fns';
 
-import Weather from './../models/Weather';
-import Forecast from './../models/Forecast';
+import Weather from '@app/models/Weather';
+import Forecast from '@app/models/Forecast';
 
 class WeatherApiService {
   private readonly appID = process.env.WEATHER_API_KEY || '';
