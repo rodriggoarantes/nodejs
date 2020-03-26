@@ -14,6 +14,7 @@ const routes = Router();
 routes.get(['', '/status'], StatusController.status);
 
 routes.post('/users', UserController.create);
+routes.post('/login', UserController.login);
 
 routes.get('/countries', CountryController.index);
 routes.get('/countries/random', CountryController.findRandom);

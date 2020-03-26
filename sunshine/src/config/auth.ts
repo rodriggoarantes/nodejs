@@ -1,13 +1,12 @@
 import { Secret } from 'jsonwebtoken';
 
 class Auth {
-  secret: Secret;
-  expireIn: string = '8h';
+  secret: string;
+  expireIn: string;
 
   constructor() {
-    this.secret = <Secret>{
-      key: process.env.APP_SECRET
-    };
+    this.secret = process.env.APP_SECRET || '';
+    this.expireIn = '8h';
   }
 }
 

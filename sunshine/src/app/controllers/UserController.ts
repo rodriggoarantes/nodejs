@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import User from '@app/models/User';
 
 import service from '@app/services/UserService';
+import UserToken from '@app/models/UserToken';
 
 class UserController {
   async create(req: Request, res: Response) {
@@ -17,6 +18,18 @@ class UserController {
 
     const created = await service.store(user);
     return res.json(created);
+  }
+
+  async login(req: Request, res: Response) {
+    const { email, pass } = req.body;
+
+    if (!email || !pass) {
+      throw 'E-mail e senha devem ser informados';
+    }
+
+    const logged: UserToken = await service.login(<User>{ email, pass });
+
+    return res.json(logged);
   }
 }
 

@@ -13,7 +13,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   const [, token] = autHeader.split(' ');
   try {
     const decoded: any = jwt.verify(token, authConfig.secret);
-    req.params['userId'] = decoded.id;
+    req.headers.user = decoded.id;
     return next();
   } catch (error) {
     return res.status(401).json({

@@ -54,10 +54,8 @@ class UserService {
   }
 
   async store(user: User): Promise<User> {
-    const passhash = crypto
-      .createHash('md5')
-      .update(user.pass || '')
-      .digest('hex');
+    this.validate(user);
+    const passhash = this.createPassHash(user.pass || '');
 
     delete user.pass;
     delete user.confirmPass;
@@ -69,18 +67,25 @@ class UserService {
       pass: passhash,
       name_search: UtilService.normalizeValue(user.name)
     });
+
     return user;
   }
 
   async login(user: User): Promise<UserToken> {
+    console.log('login');
+    this.validate(user);
+
+    const passhash = this.createPassHash(user.pass || '');
+
     const result = await this.collection()
-      .where('email', user.email)
-      .where('pass', user.pass || '')
+      .where('email', '==', user.email)
+      .where('pass', '==', passhash)
       .limit(1)
       .get();
 
+    console.log(`result : ${JSON.stringify(result.empty)}`);
     let userToken: UserToken = <UserToken>{};
-    if (!result.empty) {
+    if (result && !result.empty) {
       result.forEach((element: any) => {
         const user: User = element.data();
         userToken.id = user._id || '';
@@ -93,11 +98,26 @@ class UserService {
         { id: userToken.id, name: userToken.name },
         auth.secret,
         {
-          expiresIn: auth.expireIn
+          expiresIn: auth.expireIn,
+          subject: userToken.id
         }
       );
     }
     return userToken;
+  }
+
+  private validate(user: User) {
+    if (!user || !user.email || !user.pass) {
+      throw 'Dados de usuário são inválidos';
+    }
+  }
+
+  private createPassHash(pass: string): string {
+    const passhash = crypto
+      .createHash('md5')
+      .update(pass || '')
+      .digest('hex');
+    return passhash;
   }
 }
 

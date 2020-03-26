@@ -6,7 +6,7 @@ import * as express from 'express';
 import { Application } from 'express';
 import * as cors from 'cors';
 import * as helmet from 'helmet';
-import * as morgan from 'morgan'; // log requests to the console
+import * as morgan from 'morgan';
 import * as compression from 'compression';
 
 import fbConfig from './config/firebase';
@@ -67,7 +67,7 @@ export default class App {
         next: express.NextFunction
       ) => {
         return res.status(500).json({
-          message: 'Erro interno não esperado',
+          message: 'Erro interno',
           error: typeof err === 'string' ? err : JSON.stringify(err)
         });
       }
