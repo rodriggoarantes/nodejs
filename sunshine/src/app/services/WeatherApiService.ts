@@ -1,6 +1,8 @@
 import axios from 'axios';
+import { format } from 'date-fns';
 
-import Weather from 'app/models/Weather';
+import Weather from '@app/models/Weather';
+import Forecast from '@app/models/Forecast';
 
 class WeatherApiService {
   private readonly appID = process.env.WEATHER_API_KEY || '';
@@ -22,21 +24,46 @@ class WeatherApiService {
   }
 
   async getForecast(
-    city: string,
+    cityName: string,
+    count: number = 40,
     metric: 'metric' | 'imperial' = 'metric'
-  ): Promise<Weather> {
-    const response = await axios.get(`${this.forecastURL}`, {
-      params: {
-        q: city,
-        units: metric
+  ): Promise<Array<Forecast>> {
+    const listForecasts: Array<Forecast> = [];
+    try {
+      const response = await axios.get(`${this.forecastURL}`, {
+        params: {
+          q: cityName,
+          units: metric,
+          cnt: count
+        }
+      });
+
+      if (response.data) {
+        const { list, city } = response.data;
+        if (list && list.length) {
+          for (let item of list) {
+            item.name = city.name;
+            listForecasts.push(this._mapOpenForecast(item));
+          }
+        }
       }
-    });
-    return this._mapOpenWeather(response.data);
+    } catch (error) {
+      console.log(
+        `Previsao do Tempo nao econtrada para cidade ${cityName} :: ${error}`
+      );
+    }
+    return listForecasts;
   }
 
   private _mapOpenWeather(openWeatherItem: any): Weather {
     let weather: Weather = <Weather>{};
     if (openWeatherItem) {
+      const dataIso = parseInt(
+        String(openWeatherItem.dt)
+          .padEnd(13, '1')
+          .substring(0, 13),
+        10
+      );
       weather = <Weather>{
         city: openWeatherItem.name,
         state:
@@ -46,12 +73,36 @@ class WeatherApiService {
         temp: openWeatherItem.main.temp,
         min: openWeatherItem.main.temp_min,
         max: openWeatherItem.main.temp_max,
-        pressure: openWeatherItem.main.pressure,
-        humidity: openWeatherItem.main.humidity,
-        dt: openWeatherItem.dt
+        dt: dataIso
       };
     }
     return weather;
+  }
+
+  private _mapOpenForecast(item: any): Forecast {
+    let forecast: Forecast = <Forecast>{};
+    if (item) {
+      const dataIso = parseInt(
+        String(item.dt)
+          .padEnd(13, '1')
+          .substring(0, 13),
+        10
+      );
+      const date_txt = format(new Date(dataIso), 'yyyy-MM-dd');
+      forecast = <Forecast>{
+        city: item.name,
+        state: item.weather && item.weather[0] ? item.weather[0].main : 'Clear',
+        temp: Math.round(item.main.temp * 100) / 100,
+        min: item.main.temp_min,
+        max: item.main.temp_max,
+        pressure: item.main.pressure,
+        humidity: item.main.humidity,
+        wind_speed: item.wind.speed,
+        date_txt,
+        dt: dataIso
+      };
+    }
+    return forecast;
   }
 }
 export default new WeatherApiService();

@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc -p .",
     "dev": "nodemon",
-    "start": "ts-node ./src/server.ts",
+    "start": "tsc -p . && ts-node ./src/server.ts",
     "serve": "node ./lib/server.js",
     "heroku-postbuild": "npm run build"
   },
@@ -16,7 +16,8 @@
     "axios": "^0.19.1",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "date-fns": "^2.0.0-beta.5",
+    "crypto": "^1.0.1",
+    "date-fns": "^2.11.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
@@ -25,6 +26,7 @@
     "firebase-functions": "^3.3.0",
     "helmet": "^3.21.3",
     "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
     "morgan": "^1.9.1",
     "youch": "^2.0.10",
     "yup": "^0.27.0"
@@ -61,5 +63,9 @@
     ],
     "exec": "npm start",
     "ext": "ts"
+  },
+  "_moduleAliases": {
+    "@config": "lib/config",
+    "@app": "lib/app"
   }
 }

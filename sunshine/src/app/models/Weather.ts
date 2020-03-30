@@ -1,14 +1,13 @@
-export interface Weather {
-  _id: string;
+interface Weather {
+  _id?: string;
   city: string;
   city_id: string;
+  city_picture?: any;
   state: string;
   temp: number;
   min: number;
   max: number;
-  pressure: number;
-  humidity: number;
-  dt: Date;
+  dt: number;
 }
 
 export default Weather;

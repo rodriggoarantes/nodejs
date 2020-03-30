@@ -4,8 +4,8 @@ import axios from 'axios';
 import countryService from './CountryService';
 import utilService from './UtilService';
 
-import City from 'app/models/City';
-import Country from 'app/models/Country';
+import City from '@app/models/City';
+import Country from '@app/models/Country';
 
 class CityService {
   private readonly api: string =
@@ -25,6 +25,7 @@ class CityService {
   }
 
   async findByName(filter: string): Promise<Array<City>> {
+    console.log(`findByName: ${filter}`);
     try {
       const listLocal = await this.searchLocal(filter);
 
@@ -40,6 +41,7 @@ class CityService {
         let list: Array<City> = [];
         if (response.data) {
           const geoData = response.data.data;
+          console.log(`findByName -> geoData: ${geoData.length}`);
           list = geoData.map(
             (item: any) =>
               <City>{
@@ -51,7 +53,7 @@ class CityService {
                 region: item.region
               }
           );
-          this.store(list);
+          await this.store(list);
         }
         return list;
       }
@@ -71,9 +73,29 @@ class CityService {
     return <City>{};
   }
 
-  private async store(cities: Array<City>) {
-    console.log('cadastrando-cidades');
-    cities.forEach(async item => {
+  async random(): Promise<City> {
+    console.log(`city:random`);
+    let city: City = <City>{};
+
+    let hasResult = false;
+    do {
+      let country = await countryService.random();
+      let cities: Array<City> = await this.findByName(country.capital);
+
+      console.log(`city: ${country.capital} | founded: ${cities.length}`);
+
+      hasResult =
+        country && country.capital.length > 0 && cities && cities.length > 0;
+      if (hasResult) {
+        city = cities[0];
+      }
+    } while (!hasResult);
+
+    return city;
+  }
+
+  private async store(list: Array<City>) {
+    for (let item of list) {
       if (item.countryCode) {
         const country: Country = await countryService.findByCode(
           item.countryCode
@@ -83,13 +105,14 @@ class CityService {
         }
       }
 
-      const ref = this.collection().doc();
+      const ref = await this.collection().doc();
+      item._id = ref.id;
+
       ref.set({
-        _id: ref.id,
         ...item,
         name_search: utilService.normalizeValue(item.name)
       });
-    });
+    }
   }
 
   private async searchLocal(filter: string): Promise<Array<City>> {

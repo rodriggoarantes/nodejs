@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
 
-import City from 'app/models/City';
-import Weather from 'app/models/Weather';
+import { City } from './../models/City';
 
 import weatherService from './../services/WeatherService';
 import cityService from './../services/CityService';
 
-class WeatherController {
+class ForecastController {
   async findByCity(req: Request, res: Response) {
     const { id } = req.params;
 
@@ -19,23 +18,14 @@ class WeatherController {
       throw 'Cidade informada não encontrada';
     }
 
-    const weather = await weatherService.weatherByCity(city);
+    const list = await weatherService.forecastByCity(city);
 
-    if (weather) {
-      return res.status(200).json(weather);
-    } else {
-      return res.status(404).json({ mensagem: 'Nenhum registro encontrado' });
-    }
-  }
-
-  async suggested(_: Request, res: Response) {
-    const weather: Weather = await weatherService.weatherSuggested();
-    if (weather) {
-      return res.status(200).json(weather);
+    if (list && list.length) {
+      return res.status(200).json(list);
     } else {
       return res.status(404).json({ mensagem: 'Nenhum registro encontrado' });
     }
   }
 }
 
-export default new WeatherController();
+export default new ForecastController();
