@@ -7,8 +7,7 @@
   "scripts": {
     "build": "tsc -p .",
     "dev": "nodemon",
-    "tsnode": "tsc -p . && ts-node -r module-alias/register ./src/server.ts",
-    "start": "ts-node ./src/server.ts",
+    "start": "tsc -p . && ts-node ./src/server.ts",
     "serve": "node ./lib/server.js",
     "heroku-postbuild": "npm run build"
   },
@@ -62,7 +61,7 @@
     "watch": [
       "src"
     ],
-    "exec": "npm run tsnode",
+    "exec": "npm start",
     "ext": "ts"
   },
   "_moduleAliases": {
