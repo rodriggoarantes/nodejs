@@ -112,10 +112,8 @@ class WeatherService {
     let weather: Weather = <Weather>{};
     if (city && city._id) {
       weather = await this.weatherByCity(city);
-      weather.city_picture = picture;
       if (!cached) {
-        const pic: Picture = await pictureService.getRandom(city.name);
-        weather.city_picture = pic;
+        picture = await pictureService.getRandom(city.name);
 
         const ref = collection.doc();
         ref.set({
@@ -128,6 +126,7 @@ class WeatherService {
           picture
         });
       }
+      weather.city_picture = picture;
     }
 
     return weather;
