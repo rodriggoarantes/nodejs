@@ -102,6 +102,7 @@ class WeatherService {
         const data = element.data();
         city._id = data.city_id;
         city.name = data.city_name;
+        city.countryCode = data.country;
         picture = data.picture;
         return;
       });
@@ -120,12 +121,14 @@ class WeatherService {
           _id: ref.id,
           city_id: city._id,
           city_name: city.name,
+          country: city.countryCode,
           year,
           month,
           week,
           picture
         });
       }
+      weather.country = city.countryCode;
       weather.city_picture = picture;
     }
 
