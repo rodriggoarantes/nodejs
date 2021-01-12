@@ -53,6 +53,7 @@ class WeatherService {
     try {
       const weather: Weather = await weatherApi.getWeather(city.name);
       console.log(`WEATHER: ${JSON.stringify(weather)}`);
+
       const actualyForecast = await weatherApi.getForecast(weather.city, 1);
       if (actualyForecast && actualyForecast.length) {
         const first = actualyForecast[0];
@@ -60,6 +61,7 @@ class WeatherService {
         weather.max = first.max;
         weather.min = first.min;
         weather.dt = first.dt;
+
         console.log(`FORECAST: ${JSON.stringify(first)}`);
       }
 

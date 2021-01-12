@@ -5,7 +5,7 @@ import service from './../services/PictureService';
 
 class PictureController {
   async find(req: Request, res: Response) {
-    const { query } = req.query;
+    const query = req.query.query as string;
 
     const photo: Picture = await service.getRandom(query);
     return res.json(photo);
