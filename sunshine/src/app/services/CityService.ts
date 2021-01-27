@@ -63,6 +63,7 @@ class CityService {
   }
 
   async findById(id: string): Promise<City> {
+    console.log(`byId: ${id}`);
     const refDoc = this.collection().doc(id);
     const result = await refDoc.get();
 

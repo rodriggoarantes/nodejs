@@ -136,6 +136,7 @@ class WeatherService {
 
     return weather;
   }
+
   /**
    * Lista a previsao do tempo para as cidades já cadastradas no sistema (firebase)
    * @param cityId

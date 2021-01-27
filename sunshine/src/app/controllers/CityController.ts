@@ -1,4 +1,3 @@
-import * as core from 'express-serve-static-core';
 import { Request, Response } from 'express';
 
 import cityService from './../services/CityService';
