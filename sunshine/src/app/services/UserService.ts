@@ -89,6 +89,7 @@ class UserService {
       result.forEach((element: any) => {
         const user: User = element.data();
         userToken.id = user._id || '';
+        userToken._id = userToken.id;
         userToken.name = user.name;
         userToken.email = user.email;
         return;
