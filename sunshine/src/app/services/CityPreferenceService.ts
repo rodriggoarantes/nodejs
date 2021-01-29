@@ -3,6 +3,7 @@ import * as firebase from 'firebase-admin';
 import cityService from './CityService';
 
 import City from '@app/models/City';
+import { user } from 'firebase-functions/lib/providers/auth';
 
 class CityPreferenceService {
   private db: any = null;
@@ -38,12 +39,20 @@ class CityPreferenceService {
     return cities;
   }
 
-  async store(cityId: string, userId: string) {
-    const ref = this.collection().doc();
-    ref.set({
-      userId,
-      cityId
-    });
+  async store(cityId: string, userId: string): Promise<boolean> {
+    const cities = await this.findByUser(userId);
+    const exists = cities.map(city => city._id).includes(cityId);
+
+    if (!exists) {
+      const ref = this.collection().doc();
+      ref.set({
+        userId,
+        cityId
+      });
+
+      return true;
+    }
+    return false;
   }
 
   async remove(cityId: string, userId: string) {

@@ -53,9 +53,12 @@ class PreferenceController {
       throw 'Identificador de usuario e cidade deve ser informado';
     }
 
-    await cityPreferenceService.store(city, user);
+    const saved = await cityPreferenceService.store(city, user);
 
-    return res.status(200).json({ mensagem: 'Armazenado com sucesso' });
+    if (saved) {
+      return res.status(200).json({ mensagem: 'Armazenado com sucesso' });
+    }
+    return res.status(202).json({ mensagem: 'Configuração já existente' });
   }
 
   async remove(req: Request, res: Response) {
