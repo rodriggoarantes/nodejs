@@ -6,6 +6,7 @@ import utilService from './UtilService';
 
 import City from '@app/models/City';
 import Country from '@app/models/Country';
+import { user } from 'firebase-functions/lib/providers/auth';
 
 class CityService {
   private readonly api: string =
@@ -105,6 +106,12 @@ class CityService {
         }
       }
 
+      const city = await this.findBySearchName(item.name);
+      if (city._id) {
+        console.log(`Cidade já existente no cadastro ${item.name}`);
+        return;
+      }
+
       const ref = await this.collection().doc();
       item._id = ref.id;
 
@@ -130,6 +137,24 @@ class CityService {
       return list;
     }
     return [];
+  }
+
+  private async findBySearchName(filter: string): Promise<City> {
+    const normalizeFilter = utilService.normalizeValue(filter);
+    const result = await this.collection()
+      .where('name_search', '==', normalizeFilter)
+      .limit(1)
+      .get();
+
+    let city = <City>{};
+    if (!result.empty) {
+      result.forEach((element: any) => {
+        city = element.data();
+        return;
+      });
+    }
+
+    return city;
   }
 
   private async listLocal(): Promise<Array<City>> {
