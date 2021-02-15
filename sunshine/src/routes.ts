@@ -17,6 +17,12 @@ routes.get(['', '/status'], StatusController.status);
 routes.post('/users', UserController.create);
 routes.post('/login', UserController.login);
 
+//-------
+
+routes.use(authMiddleware);
+
+routes.get('/auth', StatusController.status);
+
 routes.get('/countries', CountryController.index);
 routes.get('/countries/random', CountryController.findRandom);
 routes.get('/countries/code/:code', CountryController.findByCode);
@@ -34,11 +40,5 @@ routes.get('/preferences/:userId/cities', PreferenceController.cities);
 routes.get('/preferences/:userId/weathers', PreferenceController.weathers);
 routes.post('/preferences/:user/cities/:city', PreferenceController.store);
 routes.delete('/preferences/:user/cities/:city', PreferenceController.remove);
-
-//-------
-
-routes.use(authMiddleware);
-
-routes.get('/auth', StatusController.status);
 
 export default routes;
