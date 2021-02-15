@@ -72,7 +72,7 @@ class UserService {
   }
 
   async login(user: User): Promise<UserToken> {
-    console.log('login');
+    console.log(`login : ${user.email}`);
     this.validate(user);
 
     const passhash = this.createPassHash(user.pass || '');
@@ -83,8 +83,9 @@ class UserService {
       .limit(1)
       .get();
 
-    console.log(`result : ${JSON.stringify(result.empty)}`);
-    let userToken: UserToken = <UserToken>{};
+    console.log(`result_empty : ${JSON.stringify(result.empty)}`);
+
+    const userToken: UserToken = <UserToken>{};
     if (result && !result.empty) {
       result.forEach((element: any) => {
         const user: User = element.data();
@@ -92,6 +93,8 @@ class UserService {
         userToken._id = userToken.id;
         userToken.name = user.name;
         userToken.email = user.email;
+
+        console.log(`loggedin : ${user.name}`);
         return;
       });
 
