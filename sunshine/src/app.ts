@@ -41,10 +41,6 @@ export default class App {
     // CORS
     this.server.use(cors());
     this.server.use(express.json());
-    this.server.use(
-      '/files',
-      express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
-    );
     this.server.use(helmet());
 
     if (process.env.NODE_ENV === 'develop') {
