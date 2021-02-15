@@ -67,5 +67,8 @@
   "_moduleAliases": {
     "@config": "lib/config",
     "@app": "lib/app"
+  },
+  "engines": {
+    "node": "10"
   }
 }
