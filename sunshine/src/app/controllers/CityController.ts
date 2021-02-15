@@ -5,11 +5,10 @@ import City from './../models/City';
 
 class CityController {
   async search(req: Request, res: Response) {
-    const { name } = req.query;
+    const name = req.query.name as string;
     if (!name) {
       throw 'Filtro *name* não informado';
-    }
-    if (name.length < 3) {
+    } else if (name.length < 3) {
       throw 'Filtro *name* deve conter pelo menos três (3) caracteres';
     }
 

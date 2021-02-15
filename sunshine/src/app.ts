@@ -1,6 +1,5 @@
 import 'dotenv/config';
 
-import * as path from 'path';
 import * as dotenv from 'dotenv';
 import * as express from 'express';
 import { Application } from 'express';
@@ -41,10 +40,6 @@ export default class App {
     // CORS
     this.server.use(cors());
     this.server.use(express.json());
-    this.server.use(
-      '/files',
-      express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
-    );
     this.server.use(helmet());
 
     if (process.env.NODE_ENV === 'develop') {
@@ -61,13 +56,15 @@ export default class App {
   private exceptionHandler() {
     this.server.use(
       async (
-        err: express.ErrorRequestHandler,
+        err: any,
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
       ) => {
         return res.status(500).json({
-          message: 'Erro interno',
+          message:
+            (err.message && 'Erro interno não esperado ${err.message}') ||
+            'Erro Interno',
           error: typeof err === 'string' ? err : JSON.stringify(err)
         });
       }

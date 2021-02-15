@@ -53,6 +53,7 @@ class WeatherService {
     try {
       const weather: Weather = await weatherApi.getWeather(city.name);
       console.log(`WEATHER: ${JSON.stringify(weather)}`);
+
       const actualyForecast = await weatherApi.getForecast(weather.city, 1);
       if (actualyForecast && actualyForecast.length) {
         const first = actualyForecast[0];
@@ -60,6 +61,7 @@ class WeatherService {
         weather.max = first.max;
         weather.min = first.min;
         weather.dt = first.dt;
+
         console.log(`FORECAST: ${JSON.stringify(first)}`);
       }
 
@@ -102,6 +104,7 @@ class WeatherService {
         const data = element.data();
         city._id = data.city_id;
         city.name = data.city_name;
+        city.countryCode = data.country;
         picture = data.picture;
         return;
       });
@@ -112,26 +115,28 @@ class WeatherService {
     let weather: Weather = <Weather>{};
     if (city && city._id) {
       weather = await this.weatherByCity(city);
-      weather.city_picture = picture;
       if (!cached) {
-        const pic: Picture = await pictureService.getRandom(city.name);
-        weather.city_picture = pic;
+        picture = await pictureService.getRandom(city.name);
 
         const ref = collection.doc();
         ref.set({
           _id: ref.id,
           city_id: city._id,
           city_name: city.name,
+          country: city.countryCode,
           year,
           month,
           week,
           picture
         });
       }
+      weather.country = city.countryCode;
+      weather.city_picture = picture;
     }
 
     return weather;
   }
+
   /**
    * Lista a previsao do tempo para as cidades já cadastradas no sistema (firebase)
    * @param cityId

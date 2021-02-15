@@ -1,4 +1,4 @@
-export interface City {
+export interface User {
   _id?: string;
   name: string;
   email: string;
@@ -6,4 +6,4 @@ export interface City {
   confirmPass?: string;
 }
 
-export default City;
+export default User;
