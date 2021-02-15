@@ -61,13 +61,15 @@ export default class App {
   private exceptionHandler() {
     this.server.use(
       async (
-        err: express.ErrorRequestHandler,
+        err: any,
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
       ) => {
         return res.status(500).json({
-          message: 'Erro interno',
+          message:
+            (err.message && 'Erro interno não esperado ${err.message}') ||
+            'Erro Interno',
           error: typeof err === 'string' ? err : JSON.stringify(err)
         });
       }
