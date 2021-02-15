@@ -63,8 +63,7 @@ export default class App {
       ) => {
         return res.status(500).json({
           message:
-            (err.message && 'Erro interno não esperado ${err.message}') ||
-            'Erro Interno',
+            err.message && `Erro interno não esperado ${err.message || ''}`,
           error: typeof err === 'string' ? err : JSON.stringify(err)
         });
       }
