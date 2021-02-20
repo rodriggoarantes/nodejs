@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
 
+import Status from '@app/models/Status';
+
 class StatusController {
-  async status(_: Request, res: Response) {
-    return res.json({
-      app: 'TS-DEV - API',
+  async status(req: Request, res: Response) {
+    const { user } = req.headers;
+    return res.json(<Status>{
+      app: 'Hello - Typescript - API',
       time: new Date(),
-      techs: ['typescript', 'nodejs', 'expressjs'],
+      user: user || 'none'
     });
   }
 }
