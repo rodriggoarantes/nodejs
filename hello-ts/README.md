@@ -1,12 +1,11 @@
-# Sunshine Weather Radar
-Projeto para previsao do tempo consumindo outras apis, de tempo, cidades, paises e imagens
+# HELLO TS
+Projeto para usar como base, de api utilizando Typescript
 
-- CloudFunctions do Firebase.
 - Typescript
 - Api com ExpressJS
-- OpenWeather API
-
+- dotenv
+- prettier
 
 # RUN
-yarn install
-yarn dev
+- yarn install
+- yarn dev
