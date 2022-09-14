@@ -1,15 +1,14 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node 16",
   "compilerOptions": {
     "baseUrl": "src",
-    "paths": {
-      "@app/*": ["app/*"],
-      "@config/*": ["config/*"]
-    },
-    "lib": ["es2018"],
+    "rootDir": "src",
+    "outDir": "lib",
+    "lib": ["es6", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es2018",
-    "outDir": "lib",
+    "target": "es6",
     "sourceMap": true,
     "strict": true,
     "removeComments": true,
@@ -19,11 +18,20 @@
     "importHelpers": true,
     "noUnusedLocals": false,
     "esModuleInterop": true,
-    "types": ["node"],
-    "typeRoots": ["node_modules/@types"]
+    "types": ["node", "reflect-metadata"],
+    "typeRoots": ["node_modules/@types"],
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@app/*": ["./app/*"],
+      "@config/*": ["./config/*"],
+      "@controllers/*": ["./app/controllers/*"],
+      "@api/*": ["./app/controllers/*"],
+      "@domain/*": ["./app/domain/*"],
+    }
   },
   "resolveJsonModuletrue": true,
   "compileOnSave": true,
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "public", ".vscode"]
+  "exclude": ["node_modules", "public", "lib", ".vscode", "src/**/*.spec.ts"]
 }

@@ -1,9 +1,14 @@
 import { Request, Response } from 'express';
 
-import Status from '@app/models/Status';
+import { logger } from '@config/logger';
+
+import Status from '@app/domain/status/Status';
 
 class StatusController {
+
   async status(req: Request, res: Response) {
+    logger.debug('step=status C=StatusController M=status');
+
     const { user } = req.headers;
     return res.json(<Status>{
       app: 'Hello - Typescript - API',
