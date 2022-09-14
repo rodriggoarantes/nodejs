@@ -26,8 +26,7 @@
       "@app/*": ["./app/*"],
       "@config/*": ["./config/*"],
       "@controllers/*": ["./app/controllers/*"],
-      "@api/*": ["./app/controllers/*"],
-      "@domain/*": ["./app/domain/*"],
+      "@domain/*": ["./app/domain/*"]
     }
   },
   "resolveJsonModuletrue": true,

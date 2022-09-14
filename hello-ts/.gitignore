@@ -71,8 +71,6 @@ typings/
 # next.js build output
 .next
 
-yarn.lock
-
 tmp/
 
 functions/code
@@ -80,3 +78,7 @@ functions/code
 lib/
 
 .vscode/
+
+.yarn/
+
+.pnp*
