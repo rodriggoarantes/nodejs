@@ -81,4 +81,4 @@ lib/
 
 .yarn/
 
-.pnp*
+.pnp.*
